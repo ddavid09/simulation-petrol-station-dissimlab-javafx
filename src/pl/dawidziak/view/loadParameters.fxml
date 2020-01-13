@@ -26,9 +26,9 @@
 
         </rowConstraints>
          <children>
-            <TextField fx:id="clientAmountInput" prefHeight="25.0" prefWidth="181.0" GridPane.columnIndex="1" />
-            <TextField fx:id="postAmountInput" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="counterAmountInput" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="clientAmountInput" prefHeight="25.0" prefWidth="181.0" text="1500" GridPane.columnIndex="1" />
+            <TextField fx:id="postAmountInput" text="4" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="counterAmountInput" text="2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Liczba klientow" />
             <Label text="Liczba stanowisk" GridPane.rowIndex="1" />
             <Label text="Liczba kas" GridPane.rowIndex="2" />
@@ -39,7 +39,7 @@
             <Label text="Rozklad czasu LPG" GridPane.rowIndex="7" />
             <Label text="Rozklad los. myjni" GridPane.rowIndex="8" />
             <Label text="Rozklad los. typu paliwa" GridPane.rowIndex="9" />
-            <TextField fx:id="postQueueSizeInput" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="postQueueSizeInput" text="25" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <ComboBox fx:id="clientDistribComboBox" onAction="#distributionOnChange" prefWidth="150.0" promptText="Wybierz" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <ComboBox fx:id="PBtimeDistribComboBox" onAction="#distributionOnChange" prefWidth="150.0" promptText="Wybierz" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <ComboBox fx:id="ONtimeDistribComboBox" onAction="#distributionOnChange" prefWidth="150.0" promptText="Wybierz" GridPane.columnIndex="1" GridPane.rowIndex="6" />
