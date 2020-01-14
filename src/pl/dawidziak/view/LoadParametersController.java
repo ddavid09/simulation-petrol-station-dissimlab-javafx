@@ -14,6 +14,7 @@ import pl.dawidziak.model.DistributionName;
 import pl.dawidziak.model.Environment;
 import pl.dawidziak.model.SimParameters;
 
+import javax.security.auth.login.CredentialNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -126,12 +127,10 @@ public class LoadParametersController implements Initializable {
     private int determineParamsAmount(DistributionName distribution){
         switch(distribution){
             case exponential:
-            case laplace:
             case chisquare:
             case student:
             case poisson:
             case geometric:
-            case triangular:
                 return 1;
             case uniform:
             case erlang:
@@ -141,12 +140,9 @@ public class LoadParametersController implements Initializable {
             case lognormal:
             case fdistribution:
             case weibull:
-            case binomial:
-            case negativebinomial:
                 return 2;
             default:
-                return 3;
-
+                return 0;
         }
     }
 

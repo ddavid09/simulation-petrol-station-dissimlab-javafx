@@ -18,7 +18,7 @@ public class Main extends Application {
         primaryStage.setTitle("Symulacja stacji Paliw - Wprowadz parametry");
         primaryStage.setScene(new Scene(root, 540, 400));
         primaryStage.show();
-        primaryStage.close(); //step over window show
+        //primaryStage.close(); //step over window show
     }
 
 
