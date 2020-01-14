@@ -119,7 +119,7 @@ public class LoadParametersController implements Initializable {
 
     public void distributionOnChange(ActionEvent actionEvent) {
         ComboBox<DistributionName> comboBox = (ComboBox<DistributionName>)actionEvent.getSource();
-        int row = gridLayout.getRowIndex(comboBox);
+        int row = GridPane.getRowIndex(comboBox);
         int paramsAmount = determineParamsAmount(comboBox.getValue());
         askForParams(paramsAmount, row);
     }

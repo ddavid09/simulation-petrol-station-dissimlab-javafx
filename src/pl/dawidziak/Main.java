@@ -18,7 +18,7 @@ public class Main extends Application {
         primaryStage.setTitle("Symulacja stacji Paliw - Wprowadz parametry");
         primaryStage.setScene(new Scene(root, 540, 400));
         primaryStage.show();
-        //primaryStage.close(); //step over window show
+        primaryStage.close(); //step over window show
     }
 
 
@@ -43,16 +43,16 @@ public class Main extends Application {
 
     private static Environment mockEnvironment(){
 
-        int clientAmount = 1500;
+        int clientAmount = 150;
         int postAmount = 4;
         int postQueueSize = 35;
         int counterAmount = 3;
 
-        Distribution clientDistrib = new Distribution(DistributionName.exponential, 1000);
+        Distribution clientDistrib = new Distribution(DistributionName.exponential, 100);
         Distribution PBtankTimeDistrib = new Distribution(DistributionName.uniform, 0, 100);
         Distribution ONtankTimeDistrib = new Distribution(DistributionName.erlang, 100, 2);
         Distribution LPGtankTimeDistrib = new Distribution(DistributionName.normal, 50, 50);
-        Distribution carWashChoiceDistrib = new Distribution(DistributionName.beta, 4, 4);
+        Distribution carWashChoiceDistrib = new Distribution(DistributionName.normal, 30, 40);
         Distribution fuelChoiceDistrib = new Distribution(DistributionName.gamma, 5, 2);
 
         //SimParameters

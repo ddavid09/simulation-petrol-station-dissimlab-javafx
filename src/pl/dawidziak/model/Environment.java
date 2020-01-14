@@ -12,6 +12,8 @@ public class Environment extends BasicSimObj {
     public final Stand[] counterStands;
     public final Stand washStand;
 
+    private int lostClientAmount;
+
     public Environment(SimParameters simParameters) {
         this.simParameters = simParameters;
 
@@ -19,10 +21,24 @@ public class Environment extends BasicSimObj {
         queueToCounters = new Queue();
         queueToWash = new Queue();
         fuelStands = new Stand[simParameters.postAmount];
+        for(int i=0; i<fuelStands.length; i++){
+            fuelStands[i] = new Stand();
+        }
         counterStands = new Stand[simParameters.counterAmount];
+        for(int i=0; i<counterStands.length; i++){
+            counterStands[i] = new Stand();
+        }
         washStand = new Stand();
 
         log();
+    }
+
+    public void incrementLostAmount(){
+        lostClientAmount++;
+    }
+
+    public int getLostClientAmount() {
+        return lostClientAmount;
     }
 
     private void log(){

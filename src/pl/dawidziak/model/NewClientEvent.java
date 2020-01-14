@@ -5,7 +5,7 @@ import dissimlab.simcore.SimControlException;
 
 public class NewClientEvent extends BasicSimEvent<Environment, Object> {
 
-    private static int counter = 0;
+    private static int clientCounter = 0;
 
     public NewClientEvent(Environment entity, double delay) throws SimControlException {
         super(entity, delay);
@@ -13,19 +13,67 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object> {
 
     @Override
     protected void stateChange() throws SimControlException {
-        counter++;
         var environment = getSimObj();
-        if(counter < environment.simParameters.clientAmount){
+        if(clientCounter < environment.simParameters.clientAmount){
+            clientCounter++;
+            Client mannedClient = new Client(clientCounter);
             RandomGenerator RandomGen = new RandomGenerator();
+            mannedClient.DrawLotClientType(RandomGen, environment.simParameters.carWashChoiceDistrib);
+            if(mannedClient.getClientType() != ClientType.ONLY_WASH){
+                mannedClient.DrawLotFuelType(RandomGen, environment.simParameters.PBtankTimeDistrib,
+                        environment.simParameters.ONtankTimeDistrib,
+                        environment.simParameters.LPGtankTimeDistrib);
+            }
+            System.out.println(String.format("%-14.4f", simTime()) + "Utworzono klienta nr " + mannedClient.idNumber + " " + mannedClient.infoToString());
+            serveClient(environment, mannedClient);
 
-
-            double delay = RandomGen.generate(environment.simParameters.fuelChoiceDistrib);
-
-            System.out.println(environment.simParameters.fuelChoiceDistrib.toString() + " = " + delay);
-
+            double dalay = RandomGen.generate(environment.simParameters.clientDistrib);
+            new NewClientEvent(environment, dalay);
         }
 
     }
+
+    private void serveClient(Environment environment, Client client) throws SimControlException {
+        switch (client.getClientType()){
+            case ONLY_FUEL:
+            case FUEL_WASH:
+                if(environment.queueToFuelStands.isEmpty()){
+                    for(int i=0; i<environment.fuelStands.length; i++){
+                        if(environment.fuelStands[i].getStoredClient() == null){
+                            environment.fuelStands[i].setStoredClient(client);
+                            new StartTankEvent(environment, 0);
+                            break;
+                        }else if(i == environment.fuelStands.length-1){
+                            environment.queueToFuelStands.add(client);
+                        }
+                    }
+                }else{
+                    if(environment.queueToFuelStands.add(client)){
+                        System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do stanowisk\t\t\t stan kolejki: " + environment.queueToFuelStands.size() + "/" + environment.simParameters.postQueueSize);
+                    }else{
+                        environment.incrementLostAmount();
+                        System.out.println(String.format("%-14.4f", simTime()) + "Utracono klienta nr " + client.idNumber);
+                    }
+                }
+                break;
+            case ONLY_WASH:
+                if(environment.queueToCounters.isEmpty()){
+                    for(int i=0; i<environment.counterStands.length; i++){
+                        if(environment.counterStands[i].getStoredClient() == null){
+                            environment.counterStands[i].setStoredClient(client);
+                            new StartPayEvent(environment, 0);
+                        }else if(i == environment.counterStands.length-1){
+                            environment.queueToCounters.add(client);
+                            System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do kas\t\t\t\t wielkosc kolejki do kas: " + environment.queueToCounters.size());
+                        }
+                    }
+                }else{
+                    environment.queueToCounters.add(client);
+                    System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do kas\t\t\t\t wielkosc kolejki do kas: " + environment.queueToCounters.size());
+                }
+        }
+    }
+
 
     @Override
     protected void onTermination() throws SimControlException {
@@ -36,4 +84,6 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object> {
     protected void onInterruption() throws SimControlException {
 
     }
+
+
 }
