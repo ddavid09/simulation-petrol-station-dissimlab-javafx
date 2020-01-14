@@ -1,12 +1,27 @@
 package pl.dawidziak.model;
 
 import dissimlab.simcore.BasicSimObj;
+import pl.dawidziak.LimitedQueue;
 
 public class Environment extends BasicSimObj {
-    private SimParameters simParameters;
+    public final SimParameters simParameters;
+
+    public final LimitedQueue queueToFuelStands;
+    public final Queue queueToCounters;
+    public final Queue queueToWash;
+    public final Stand[] fuelStands;
+    public final Stand[] counterStands;
+    public final Stand washStand;
 
     public Environment(SimParameters simParameters) {
         this.simParameters = simParameters;
+
+        queueToFuelStands = new LimitedQueue(simParameters.postQueueSize);
+        queueToCounters = new Queue();
+        queueToWash = new Queue();
+        fuelStands = new Stand[simParameters.postAmount];
+        counterStands = new Stand[simParameters.counterAmount];
+        washStand = new Stand();
 
         log();
     }
