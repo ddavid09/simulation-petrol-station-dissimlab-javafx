@@ -4,10 +4,11 @@ public class Distribution {
     public final DistributionName name;
     private Number[] distributionParams;
 
-    public Distribution(DistributionName name, Number[] distributionParams) {
+    public Distribution(DistributionName name, Number... distributionParams) {
         this.name = name;
         this.distributionParams = distributionParams;
     }
+
 
     @Override
     public String toString() {

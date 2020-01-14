@@ -22,7 +22,7 @@ public class RandomGenerator extends SimGenerator{
             case gamma:
                 return this.gamma(params[0].doubleValue(), params[1].doubleValue());
             case normal:
-                return this.normal(params[0].doubleValue(), params[1].doubleValue());
+                return Math.abs(this.normal(params[0].doubleValue(), params[1].doubleValue()));
             case beta:
                 return this.beta(params[0].doubleValue(), params[1].doubleValue());
             case lognormal:
@@ -40,7 +40,7 @@ public class RandomGenerator extends SimGenerator{
             case chisquare:
                 return this.chisquare(params[0].intValue());
             case student:
-                return  this.student(params[0].intValue());
+                return  Math.abs(this.student(params[0].intValue()));
             case fdistribution:
                 return this.fdistribution(params[0].intValue(), params[1].intValue());
             case hypergeometric:

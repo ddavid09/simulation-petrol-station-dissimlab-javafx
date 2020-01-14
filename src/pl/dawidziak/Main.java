@@ -24,14 +24,15 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-        var environment = mockEnvironment();
-        var simManager = new SimManager();
+        SimManager simManager = new SimManager();
+        Environment environment = mockEnvironment();
 
         try {
             new NewClientEvent(environment, 0);
         } catch (SimControlException e) {
             e.printStackTrace();
         }
+
         try {
             simManager.startSimulation();
         } catch (SimControlException e) {
@@ -41,30 +42,40 @@ public class Main extends Application {
     }
 
     private static Environment mockEnvironment(){
-        int LAMBDA = 5;
 
         int clientAmount = 1500;
         int postAmount = 4;
         int postQueueSize = 35;
         int counterAmount = 3;
-        //Distributions
-        Number[] exponentialParam = {5};
-        Number[] uniformParam = {10, 20};
-        Number[] erlangParam = {5, 1};
-        Number[] normalParam = {0, 1};
-        Number[] chiParam = {1};
-        Number[] weibullParam = {1, 3};
 
-        Distribution clientDistrib = new Distribution(DistributionName.exponential, exponentialParam);
-        Distribution PBtankTimeDistrib = new Distribution(DistributionName.uniform, uniformParam);
-        Distribution ONtankTimeDistrib = new Distribution(DistributionName.erlang, erlangParam);
-        Distribution LPGtankTimeDistrib = new Distribution(DistributionName.normal, normalParam);
-        Distribution carWashChoiceDistrib = new Distribution(DistributionName.chisquare, chiParam);
-        Distribution fuelChoiceDistrib = new Distribution(DistributionName.weibull, weibullParam);
+        Distribution clientDistrib = new Distribution(DistributionName.exponential, 1000);
+        Distribution PBtankTimeDistrib = new Distribution(DistributionName.uniform, 0, 100);
+        Distribution ONtankTimeDistrib = new Distribution(DistributionName.erlang, 100, 2);
+        Distribution LPGtankTimeDistrib = new Distribution(DistributionName.normal, 50, 50);
+        Distribution carWashChoiceDistrib = new Distribution(DistributionName.beta, 4, 4);
+        Distribution fuelChoiceDistrib = new Distribution(DistributionName.gamma, 5, 2);
 
         //SimParameters
         var simParams = new SimParameters(clientAmount, postAmount, postQueueSize, counterAmount, clientDistrib, fuelChoiceDistrib, PBtankTimeDistrib, LPGtankTimeDistrib, ONtankTimeDistrib, carWashChoiceDistrib);
         //Environment
         return new Environment(simParams);
     }
+
+//    private static void testDistributions(){
+//        RandomGenerator testRandom = new RandomGenerator();
+//        double val1 = testRandom.generate(new Distribution(DistributionName.uniform, 2, 5));
+//        double val2 = testRandom.generate(new Distribution(DistributionName.exponential, 4));
+//        double val3 = testRandom.generate(new Distribution(DistributionName.erlang, 100, 3));
+//        double val4 = testRandom.generate(new Distribution(DistributionName.gamma, 5, 2));
+//        double val5 = testRandom.generate(new Distribution(DistributionName.normal, 50, 50));
+//        double val6 = testRandom.generate(new Distribution(DistributionName.chisquare, 4));
+//        double val7 = testRandom.generate(new Distribution(DistributionName.beta, 4, 4));//<0;1>
+//        double val8 = testRandom.generate(new Distribution(DistributionName.student, 3));
+//        double val9 = testRandom.generate(new Distribution(DistributionName.lognormal, 2, 2));
+//        double val10 = testRandom.generate(new Distribution(DistributionName.fdistribution, 2, 2));
+//        double val11 = testRandom.generate(new Distribution(DistributionName.weibull, 2, 2));
+//        double val12 = testRandom.generate(new Distribution(DistributionName.poisson, 4));//{0, 1, 2 ..}
+//        double val13 = testRandom.generate(new Distribution(DistributionName.geometric, 0.15));//-||- param < 1 !
+//        double bp = 0;
+//    }
 }
