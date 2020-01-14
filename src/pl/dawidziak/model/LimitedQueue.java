@@ -1,4 +1,4 @@
-package pl.dawidziak;
+package pl.dawidziak.model;
 
 import pl.dawidziak.model.Client;
 import pl.dawidziak.model.Queue;

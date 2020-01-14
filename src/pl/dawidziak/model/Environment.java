@@ -1,7 +1,6 @@
 package pl.dawidziak.model;
 
 import dissimlab.simcore.BasicSimObj;
-import pl.dawidziak.LimitedQueue;
 
 public class Environment extends BasicSimObj {
     public final SimParameters simParameters;
