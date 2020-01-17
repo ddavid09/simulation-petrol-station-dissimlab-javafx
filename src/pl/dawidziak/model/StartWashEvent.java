@@ -19,11 +19,11 @@ public class StartWashEvent extends BasicSimEvent<Environment, Object> {
         Client client = stand.getStoredClient();
         System.out.println(String.format("%-14.4f", simTime()) + "Klient nr " + client.idNumber + " rozpoczal mycie w myjni ");
         //identycznie jak z czasem obslugi przy kasie - nie zostal on sparametryzowany zadnym rozkladem, wykorzystuje w takim wypadku
-        //rozklad dla czasu tankowania benzyny a wartosc wygenerowana mnoze razy 2
+        //rozklad dla czasu tankowania benzyny
         RandomGenerator RandomGen = new RandomGenerator();
         Distribution distribution = environment.simParameters.PBtankTimeDistrib;
         double delay = RandomGen.generate(distribution);
-        new FinishWashEvent(environment, delay*2);
+        new FinishWashEvent(environment, delay);
     }
 
     @Override

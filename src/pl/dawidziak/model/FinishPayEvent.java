@@ -27,10 +27,12 @@ public class FinishPayEvent extends BasicSimEvent<Environment, Stand> {
                 new StartWashEvent(environment, 0);
             }else{
                 environment.queueToWash.add(client);
+                environment.monitors.sizeQueueWash.setValue(environment.queueToWash.size());
                 System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do myjni\t\t\t stan kolejki: " + environment.queueToWash.size());
             }
         }else{
             environment.incrementServicedAmount();
+
         }
 
         if(!environment.queueToCounters.isEmpty()){

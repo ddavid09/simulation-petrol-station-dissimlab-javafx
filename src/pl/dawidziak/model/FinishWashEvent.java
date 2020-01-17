@@ -17,11 +17,13 @@ public class FinishWashEvent extends BasicSimEvent<Environment, Object> {
         Environment environment = getSimObj();
         Stand stand = environment.washStand;
         Client client = stand.getStoredClient();
+        environment.monitors.washTime.setValue(simTime()-client.getStartWashTime());
         System.out.println(String.format("%-14.4f", simTime()) + "Klient nr " + client.idNumber + " zakończył mycie w myjni");
         environment.incrementServicedAmount();
 
         if(!environment.queueToWash.isEmpty()){
             stand.setStoredClient(environment.queueToWash.remove(0));
+            environment.monitors.sizeQueueWash.setValue(environment.queueToWash.size());
             new StartWashEvent(environment, 0);
         }else{
             stand.setStoredClient(null);

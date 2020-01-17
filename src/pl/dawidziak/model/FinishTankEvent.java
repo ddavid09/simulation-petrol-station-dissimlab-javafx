@@ -17,6 +17,8 @@ public class FinishTankEvent extends BasicSimEvent<Environment, Stand> {
         Environment environment = getSimObj();
         Stand stand = transitionParams;
         Client client = stand.getStoredClient();
+        environment.monitors.serviceTime.setValue(simTime()-client.getStartTime());
+        client.setStartWashTime(simTime());
         List<Stand> standsList = Arrays.asList(environment.fuelStands);
         int standIndex = standsList.indexOf(stand)+1;
         System.out.println(String.format("%-14.4f", simTime()) + "Klient nr " + client.idNumber + " zakończył tankowanie " + client.getFuel().name() + " na stanowisku nr " + standIndex);
@@ -57,7 +59,8 @@ public class FinishTankEvent extends BasicSimEvent<Environment, Stand> {
 
         if(!environment.queueToFuelStands.isEmpty()){
             stand.setStoredClient(environment.queueToFuelStands.remove(0));
-            new StartTankEvent(environment, delay, stand);
+            environment.monitors.sizeQueueFuel.setValue(environment.queueToFuelStands.size());
+            new StartTankEvent(environment, 0, stand);
         }else{
             stand.setStoredClient(null);
         }
@@ -74,4 +77,5 @@ public class FinishTankEvent extends BasicSimEvent<Environment, Stand> {
     protected void onInterruption() throws SimControlException {
 
     }
+
 }

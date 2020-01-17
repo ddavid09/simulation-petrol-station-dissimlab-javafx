@@ -5,6 +5,13 @@ public class Client {
     public final int idNumber;
     private ClientType type;
     private FuelType fuel;
+    private double startTime;
+    private double startWashTime;
+
+    public Client(int id, double startTime){
+        this.idNumber = id;
+        this.startTime = startTime;
+    }
 
     public Client(int id) {
         idNumber = id;
@@ -74,13 +81,15 @@ public class Client {
         return sb.toString();
     }
 
-//    public String fuelToString(){
-//        switch(fuel){
-//            case LPG:
-//                return
-//            case PB:
-//
-//            case ON:
-//        }
-//    }
+    public double getStartTime() {
+        return startTime;
+    }
+
+    public double getStartWashTime() {
+        return startWashTime;
+    }
+
+    public void setStartWashTime(double startWashTime) {
+        this.startWashTime = startWashTime;
+    }
 }

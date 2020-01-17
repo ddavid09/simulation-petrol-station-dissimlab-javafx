@@ -16,7 +16,7 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object> {
         var environment = getSimObj();
         if(clientCounter < environment.simParameters.clientAmount){
             clientCounter++;
-            Client mannedClient = new Client(clientCounter);
+            Client mannedClient = new Client(clientCounter, simTime());
             RandomGenerator RandomGen = new RandomGenerator();
             mannedClient.DrawLotClientType(RandomGen, environment.simParameters.carWashChoiceDistrib);
             if(mannedClient.getClientType() != ClientType.ONLY_WASH){
@@ -45,14 +45,17 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object> {
                             break;
                         }else if(i == environment.fuelStands.length-1){
                             environment.queueToFuelStands.add(client);
+                            environment.monitors.sizeQueueFuel.setValue(environment.queueToFuelStands.size());
                             System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do stanowisk\t\t\t stan kolejki: " + environment.queueToFuelStands.size() + "/" + environment.simParameters.postQueueSize);
                         }
                     }
                 }else{
                     if(environment.queueToFuelStands.add(client)){
+                        environment.monitors.sizeQueueFuel.setValue(environment.queueToFuelStands.size());
                         System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do stanowisk\t\t\t stan kolejki: " + environment.queueToFuelStands.size() + "/" + environment.simParameters.postQueueSize);
                     }else{
                         environment.incrementLostAmount();
+                        environment.monitors.lostClient.setValue(environment.getLostClientAmount());
                         System.out.println(String.format("%-14.4f", simTime()) + "Utracono klienta nr " + client.idNumber);
                     }
                 }

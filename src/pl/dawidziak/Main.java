@@ -1,5 +1,7 @@
 package pl.dawidziak;
 
+import dissimlab.monitors.Diagram;
+import dissimlab.monitors.Statistics;
 import dissimlab.simcore.SimControlException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +11,8 @@ import javafx.stage.Stage;
 import pl.dawidziak.model.*;
 
 import dissimlab.simcore.SimManager;
+
+import java.awt.*;
 
 public class Main extends Application {
 
@@ -25,7 +29,8 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
         SimManager simManager = new SimManager();
-        Environment environment = mockEnvironment();
+        Monitors monitored = new Monitors(simManager);
+        Environment environment = mockEnvironment(monitored);
 
         try {
             new NewClientEvent(environment, 0);
@@ -39,16 +44,38 @@ public class Main extends Application {
             e.printStackTrace();
         }
 
+        System.out.println("Liczba obsluzonych klientow: " + environment.getServicedClientAmount());
+        System.out.println("Liczba straconych klientow: " + environment.getLostClientAmount());
+        System.out.println("Srednia liczba klientow w kolejce do stanowisk: " + Statistics.arithmeticMean(monitored.sizeQueueFuel));
+        System.out.println("Srednia liczba klientow w kolejce do myjni " + Statistics.arithmeticMean(monitored.sizeQueueWash));
+        System.out.println("Sredni czas tankowania samochodu: " + Statistics.arithmeticMean(monitored.serviceTime));
+        System.out.println("Sredni czas mycia samochodu: " + Statistics.arithmeticMean(monitored.washTime));
+        System.out.println("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + environment.getLostClientAmount()/environment.simParameters.clientAmount);
+
+        Diagram diagram = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba samochodow w kolejkach");
+        diagram.add(monitored.sizeQueueFuel, Color.BLACK, "do stanowisk");
+        diagram.add(monitored.sizeQueueWash, Color.RED, "do myjni");
+        diagram.show();
+
+        Diagram diagramst = new Diagram(Diagram.DiagramType.DISTRIBUTION, "Czas tankowania/mycia samochodu");
+        diagramst.add(monitored.serviceTime, Color.BLACK, "tankowania");
+        diagramst.add(monitored.washTime, Color.RED, "mycia");
+        diagramst.show();
+
+        Diagram diagramla = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba rezygnacji");
+        diagramla.add(monitored.lostClient, Color.BLUE);
+        diagramla.show();
+
     }
 
-    private static Environment mockEnvironment(){
+    private static Environment mockEnvironment(Monitors monitors){
 
-        int clientAmount = 150;
+        int clientAmount = 500;
         int postAmount = 4;
-        int postQueueSize = 35;
+        int postQueueSize = 80;
         int counterAmount = 3;
 
-        Distribution clientDistrib = new Distribution(DistributionName.exponential, 100);
+        Distribution clientDistrib = new Distribution(DistributionName.exponential, 5);
         Distribution PBtankTimeDistrib = new Distribution(DistributionName.uniform, 0, 100);
         Distribution ONtankTimeDistrib = new Distribution(DistributionName.erlang, 100, 2);
         Distribution LPGtankTimeDistrib = new Distribution(DistributionName.normal, 50, 50);
@@ -58,24 +85,7 @@ public class Main extends Application {
         //SimParameters
         var simParams = new SimParameters(clientAmount, postAmount, postQueueSize, counterAmount, clientDistrib, fuelChoiceDistrib, PBtankTimeDistrib, LPGtankTimeDistrib, ONtankTimeDistrib, carWashChoiceDistrib);
         //Environment
-        return new Environment(simParams);
+        return new Environment(simParams, monitors);
     }
 
-//    private static void testDistributions(){
-//        RandomGenerator testRandom = new RandomGenerator();
-//        double val1 = testRandom.generate(new Distribution(DistributionName.uniform, 2, 5));
-//        double val2 = testRandom.generate(new Distribution(DistributionName.exponential, 4));
-//        double val3 = testRandom.generate(new Distribution(DistributionName.erlang, 100, 3));
-//        double val4 = testRandom.generate(new Distribution(DistributionName.gamma, 5, 2));
-//        double val5 = testRandom.generate(new Distribution(DistributionName.normal, 50, 50));
-//        double val6 = testRandom.generate(new Distribution(DistributionName.chisquare, 4));
-//        double val7 = testRandom.generate(new Distribution(DistributionName.beta, 4, 4));//<0;1>
-//        double val8 = testRandom.generate(new Distribution(DistributionName.student, 3));
-//        double val9 = testRandom.generate(new Distribution(DistributionName.lognormal, 2, 2));
-//        double val10 = testRandom.generate(new Distribution(DistributionName.fdistribution, 2, 2));
-//        double val11 = testRandom.generate(new Distribution(DistributionName.weibull, 2, 2));
-//        double val12 = testRandom.generate(new Distribution(DistributionName.poisson, 4));//{0, 1, 2 ..}
-//        double val13 = testRandom.generate(new Distribution(DistributionName.geometric, 0.15));//-||- param < 1 !
-//        double bp = 0;
-//    }
 }

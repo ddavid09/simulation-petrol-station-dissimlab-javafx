@@ -111,7 +111,7 @@ public class LoadParametersController implements Initializable {
         //SimParameters
         var simParams = new SimParameters(clientAmount, postAmount, postQueueSize, counterAmount, clientDistrib, fuelChoiceDistrib, PBtankTimeDistrib, LPGtankTimeDistrib, ONtankTimeDistrib, carWashChoiceDistrib);
         //Environment
-        new Environment(simParams);
+        //new Environment(simParams);
 
         Stage stage = (Stage) gridLayout.getScene().getWindow();
         stage.close();
