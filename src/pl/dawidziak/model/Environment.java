@@ -13,6 +13,7 @@ public class Environment extends BasicSimObj {
     public final Stand washStand;
 
     private int lostClientAmount;
+    private int servicedClientAmount;
 
     public Environment(SimParameters simParameters) {
         this.simParameters = simParameters;
@@ -35,6 +36,11 @@ public class Environment extends BasicSimObj {
 
     public void incrementLostAmount(){
         lostClientAmount++;
+    }
+    public void incrementServicedAmount() {servicedClientAmount++;}
+
+    public int getServicedClientAmount() {
+        return servicedClientAmount;
     }
 
     public int getLostClientAmount() {

@@ -4,7 +4,7 @@ public class Client {
 
     public final int idNumber;
     private ClientType type;
-    private FuelType fuelType;
+    private FuelType fuel;
 
     public Client(int id) {
         idNumber = id;
@@ -28,11 +28,11 @@ public class Client {
         double on = randGen.generate(ONdistribution);
         double lpg = randGen.generate(LPGdistribution);
         if(pb > on && pb > lpg){
-            this.fuelType = FuelType.PB;
+            this.fuel = FuelType.PB;
         }else if(on > pb && on > lpg){
-            this.fuelType = FuelType.ON;
+            this.fuel = FuelType.ON;
         }else{
-            this.fuelType = FuelType.LPG;
+            this.fuel = FuelType.LPG;
         }
     }
 
@@ -40,11 +40,11 @@ public class Client {
         return type;
     }
 
-    public FuelType getFuelType() {
-        return fuelType;
+    public FuelType getFuel() {
+        return fuel;
     }
 
-    public String infoToString(){
+    public String fuelTypeToString(){
         StringBuilder sb = new StringBuilder("[");
         switch (type){
             case ONLY_WASH:
@@ -56,9 +56,9 @@ public class Client {
             case ONLY_FUEL:
                 sb.append("tylko tankowanie");
         }
-        if(fuelType != null){
+        if(fuel != null){
             sb.append(", ");
-            switch(fuelType){
+            switch(fuel){
                 case ON:
                     sb.append("ON");
                     break;
@@ -73,4 +73,14 @@ public class Client {
 
         return sb.toString();
     }
+
+//    public String fuelToString(){
+//        switch(fuel){
+//            case LPG:
+//                return
+//            case PB:
+//
+//            case ON:
+//        }
+//    }
 }

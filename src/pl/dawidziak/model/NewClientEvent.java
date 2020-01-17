@@ -24,7 +24,7 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object> {
                         environment.simParameters.ONtankTimeDistrib,
                         environment.simParameters.LPGtankTimeDistrib);
             }
-            System.out.println(String.format("%-14.4f", simTime()) + "Utworzono klienta nr " + mannedClient.idNumber + " " + mannedClient.infoToString());
+            System.out.println(String.format("%-14.4f", simTime()) + "Utworzono klienta nr " + mannedClient.idNumber + " " + mannedClient.fuelTypeToString());
             serveClient(environment, mannedClient);
 
             double dalay = RandomGen.generate(environment.simParameters.clientDistrib);
@@ -41,10 +41,11 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object> {
                     for(int i=0; i<environment.fuelStands.length; i++){
                         if(environment.fuelStands[i].getStoredClient() == null){
                             environment.fuelStands[i].setStoredClient(client);
-                            new StartTankEvent(environment, 0);
+                            new StartTankEvent(environment, 0, environment.fuelStands[i]);
                             break;
                         }else if(i == environment.fuelStands.length-1){
                             environment.queueToFuelStands.add(client);
+                            System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do stanowisk\t\t\t stan kolejki: " + environment.queueToFuelStands.size() + "/" + environment.simParameters.postQueueSize);
                         }
                     }
                 }else{
@@ -61,15 +62,16 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object> {
                     for(int i=0; i<environment.counterStands.length; i++){
                         if(environment.counterStands[i].getStoredClient() == null){
                             environment.counterStands[i].setStoredClient(client);
-                            new StartPayEvent(environment, 0);
+                            new StartPayEvent(environment, 0, environment.counterStands[i]);
+                            break;
                         }else if(i == environment.counterStands.length-1){
                             environment.queueToCounters.add(client);
-                            System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do kas\t\t\t\t wielkosc kolejki do kas: " + environment.queueToCounters.size());
+                            System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do kas\t\t\t stan kolejki: " + environment.queueToCounters.size());
                         }
                     }
                 }else{
                     environment.queueToCounters.add(client);
-                    System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do kas\t\t\t\t wielkosc kolejki do kas: " + environment.queueToCounters.size());
+                    System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do kas\t\t\t stan kolejki: " + environment.queueToCounters.size());
                 }
         }
     }
