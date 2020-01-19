@@ -3,18 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Petrol-station-sim.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Petrol-station-sim.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Petrol-station-sim/pl/dawidziak/model/NewClientEvent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Petrol-station-sim/pl/dawidziak/model/StartTankEvent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Petrol-station-sim/pl/dawidziak/model/Environment.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Petrol-station-sim/pl/dawidziak/model/Environment.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/FinishPayEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/FinishPayEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/FinishTankEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/FinishTankEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/FinishWashEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/FinishWashEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/NewClientEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/NewClientEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/StartPayEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/StartPayEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/StartTankEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/StartTankEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/StartWashEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/StartWashEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/view/LoadParametersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/view/LoadParametersController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/Environment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/Environment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/events/FinishPayEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/FinishPayEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/events/FinishTankEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/FinishTankEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/events/FinishWashEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/FinishWashEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/events/NewClientEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/NewClientEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/events/StartPayEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/StartPayEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/events/StartTankEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/StartTankEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/model/events/StartWashEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/model/events/StartWashEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pl/dawidziak/view/SimAnimationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pl/dawidziak/view/SimAnimationController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -229,7 +228,7 @@
       <updated>1359379246138</updated>
       <workItem from="1359379250712" duration="1302000" />
       <workItem from="1578921983611" duration="53445000" />
-      <workItem from="1579276110212" duration="20653000" />
+      <workItem from="1579276110212" duration="22639000" />
     </task>
     <servers />
   </component>
@@ -274,49 +273,49 @@
     <state x="795" y="377" key="FileChooserDialogImpl/0.40.1920.1040@0.40.1920.1040" timestamp="1579080018242" />
     <state x="1060" y="494" key="FileChooserDialogImpl/2560.391.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1578922072565" />
     <state x="1060" y="494" key="FileChooserDialogImpl/336.1480.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1579277133582" />
-    <state width="1877" height="228" key="GridCell.Tab.0.bottom" timestamp="1579440170672">
+    <state width="1877" height="519" key="GridCell.Tab.0.bottom" timestamp="1579442555904">
       <screen x="0" y="40" width="1920" height="1040" />
     </state>
-    <state width="1877" height="228" key="GridCell.Tab.0.bottom/0.40.1920.1040@0.40.1920.1040" timestamp="1579440170672" />
+    <state width="1877" height="519" key="GridCell.Tab.0.bottom/0.40.1920.1040@0.40.1920.1040" timestamp="1579442555904" />
     <state width="2517" height="400" key="GridCell.Tab.0.bottom/2560.391.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1578922188144" />
     <state width="2517" height="492" key="GridCell.Tab.0.bottom/336.1480.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1579303079969" />
-    <state width="1877" height="228" key="GridCell.Tab.0.center" timestamp="1579440170671">
+    <state width="1877" height="519" key="GridCell.Tab.0.center" timestamp="1579442555903">
       <screen x="0" y="40" width="1920" height="1040" />
     </state>
-    <state width="1877" height="228" key="GridCell.Tab.0.center/0.40.1920.1040@0.40.1920.1040" timestamp="1579440170671" />
+    <state width="1877" height="519" key="GridCell.Tab.0.center/0.40.1920.1040@0.40.1920.1040" timestamp="1579442555903" />
     <state width="2517" height="400" key="GridCell.Tab.0.center/2560.391.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1578922188144" />
     <state width="2517" height="492" key="GridCell.Tab.0.center/336.1480.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1579303079969" />
-    <state width="1877" height="228" key="GridCell.Tab.0.left" timestamp="1579440170671">
+    <state width="1877" height="519" key="GridCell.Tab.0.left" timestamp="1579442555903">
       <screen x="0" y="40" width="1920" height="1040" />
     </state>
-    <state width="1877" height="228" key="GridCell.Tab.0.left/0.40.1920.1040@0.40.1920.1040" timestamp="1579440170671" />
+    <state width="1877" height="519" key="GridCell.Tab.0.left/0.40.1920.1040@0.40.1920.1040" timestamp="1579442555903" />
     <state width="2517" height="400" key="GridCell.Tab.0.left/2560.391.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1578922188144" />
     <state width="2517" height="492" key="GridCell.Tab.0.left/336.1480.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1579303079969" />
-    <state width="1877" height="228" key="GridCell.Tab.0.right" timestamp="1579440170671">
+    <state width="1877" height="519" key="GridCell.Tab.0.right" timestamp="1579442555903">
       <screen x="0" y="40" width="1920" height="1040" />
     </state>
-    <state width="1877" height="228" key="GridCell.Tab.0.right/0.40.1920.1040@0.40.1920.1040" timestamp="1579440170671" />
+    <state width="1877" height="519" key="GridCell.Tab.0.right/0.40.1920.1040@0.40.1920.1040" timestamp="1579442555903" />
     <state width="2517" height="400" key="GridCell.Tab.0.right/2560.391.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1578922188144" />
     <state width="2517" height="492" key="GridCell.Tab.0.right/336.1480.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1579303079969" />
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1579361160424">
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1579442473352">
       <screen x="0" y="40" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.40.1920.1040@0.40.1920.1040" timestamp="1579361160424" />
+    <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.40.1920.1040@0.40.1920.1040" timestamp="1579442473352" />
     <state width="2517" height="492" key="GridCell.Tab.1.bottom/336.1480.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1579301388798" />
-    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1579361160424">
+    <state width="1877" height="348" key="GridCell.Tab.1.center" timestamp="1579442473351">
       <screen x="0" y="40" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.center/0.40.1920.1040@0.40.1920.1040" timestamp="1579361160424" />
+    <state width="1877" height="348" key="GridCell.Tab.1.center/0.40.1920.1040@0.40.1920.1040" timestamp="1579442473351" />
     <state width="2517" height="492" key="GridCell.Tab.1.center/336.1480.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1579301388798" />
-    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1579361160424">
+    <state width="1877" height="348" key="GridCell.Tab.1.left" timestamp="1579442473351">
       <screen x="0" y="40" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.left/0.40.1920.1040@0.40.1920.1040" timestamp="1579361160424" />
+    <state width="1877" height="348" key="GridCell.Tab.1.left/0.40.1920.1040@0.40.1920.1040" timestamp="1579442473351" />
     <state width="2517" height="492" key="GridCell.Tab.1.left/336.1480.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1579301388798" />
-    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1579361160424">
+    <state width="1877" height="348" key="GridCell.Tab.1.right" timestamp="1579442473352">
       <screen x="0" y="40" width="1920" height="1040" />
     </state>
-    <state width="1877" height="348" key="GridCell.Tab.1.right/0.40.1920.1040@0.40.1920.1040" timestamp="1579361160424" />
+    <state width="1877" height="348" key="GridCell.Tab.1.right/0.40.1920.1040@0.40.1920.1040" timestamp="1579442473352" />
     <state width="2517" height="492" key="GridCell.Tab.1.right/336.1480.1920.1040/0.40.2560.1400@0.40.2560.1400" timestamp="1579301388798" />
     <state x="760" y="314" key="SettingsEditor" timestamp="1578922137848">
       <screen x="0" y="40" width="2560" height="1400" />
@@ -354,5 +353,16 @@
       <screen x="0" y="40" width="1920" height="1040" />
     </state>
     <state x="623" y="265" width="672" height="678" key="search.everywhere.popup/0.40.1920.1040@0.40.1920.1040" timestamp="1579361276683" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/pl/dawidziak/view/SimAnimationController.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

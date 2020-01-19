@@ -21,12 +21,10 @@ public class SimAnimationController implements Initializable, EnvironmentChangeL
         fuelStandImg = new Image("stand-p.png");
         counterStandImg = new Image("stand-c.png");
         washStandImg = new Image("stand-cw.png");
-
-
     }
 
     @Override
     public void reprintEnvironment(Environment environment) {
-
+        int clientsAmount = environment.simParameters.clientAmount;
     }
 }

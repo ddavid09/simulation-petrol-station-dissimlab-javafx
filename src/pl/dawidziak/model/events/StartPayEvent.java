@@ -12,6 +12,12 @@ public class StartPayEvent extends BasicSimEvent<Environment, Stand> {
 
     private EnvironmentChangeListener listener;
 
+    public StartPayEvent(Environment entity, double delay, Stand o, EnvironmentChangeListener listener) throws SimControlException {
+        super(entity, delay, o);
+        this.listener = listener;
+    }
+
+
     public StartPayEvent(Environment entity, double delay, Stand o) throws SimControlException {
         super(entity, delay, o);
     }
@@ -29,7 +35,8 @@ public class StartPayEvent extends BasicSimEvent<Environment, Stand> {
         RandomGenerator RandomGen = new RandomGenerator();
         Distribution distribution= environment.simParameters.PBtankTimeDistrib;
         double delay = RandomGen.generate(distribution);
-        new FinishPayEvent(environment, delay/3, stand);
+        new FinishPayEvent(environment, delay/3, stand, environment.environmentChangeListener);
+        listener.reprintEnvironment(environment);
     }
 
     public void setListener(EnvironmentChangeListener listener) {

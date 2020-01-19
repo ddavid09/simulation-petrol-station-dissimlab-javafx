@@ -11,6 +11,11 @@ public class FinishWashEvent extends BasicSimEvent<Environment, Object> {
 
     private EnvironmentChangeListener listener;
 
+    public FinishWashEvent(Environment entity, double delay, EnvironmentChangeListener listener) throws SimControlException {
+        super(entity, delay);
+        this.listener = listener;
+    }
+
     public FinishWashEvent(Environment entity, double delay) throws SimControlException {
         super(entity, delay);
     }
@@ -27,10 +32,11 @@ public class FinishWashEvent extends BasicSimEvent<Environment, Object> {
         if(!environment.queueToWash.isEmpty()){
             stand.setStoredClient(environment.queueToWash.remove(0));
             environment.monitors.sizeQueueWash.setValue(environment.queueToWash.size());
-            new StartWashEvent(environment, 0);
+            new StartWashEvent(environment, 0, environment.environmentChangeListener);
         }else{
             stand.setStoredClient(null);
         }
+        listener.reprintEnvironment(environment);
     }
 
     public void setListener(EnvironmentChangeListener listener) {

@@ -14,17 +14,29 @@ import dissimlab.simcore.SimManager;
 import pl.dawidziak.model.events.NewClientEvent;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("view/loadParameters.fxml"));
-        primaryStage.setTitle("Symulacja stacji Paliw - Wprowadz parametry");
-        primaryStage.setScene(new Scene(root, 540, 400));
-        primaryStage.show();
-        //primaryStage.close(); //step over window show
+//        Parent root = FXMLLoader.load(getClass().getResource("view/loadParameters.fxml"));
+//        primaryStage.setTitle("Symulacja stacji Paliw - Wprowadz parametry");
+//        primaryStage.setScene(new Scene(root, 540, 400));
+//        primaryStage.show();
+//        //primaryStage.close(); //step over window show
 
+        Parent simRoot;
+        try{
+            simRoot = FXMLLoader.load(getClass().getResource("view/simAnimation.fxml"));
+            Stage simStage = new Stage();
+            simStage.setScene(new Scene(simRoot, 1300, 810));
+            simStage.setTitle("Symulacja");
+            simStage.show();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
 
 
     }
@@ -38,7 +50,7 @@ public class Main extends Application {
         Environment environment = mockEnvironment(monitored);
 
         try {
-            new NewClientEvent(environment, 0);
+            new NewClientEvent(environment, 0, environment.environmentChangeListener);
         } catch (SimControlException e) {
             e.printStackTrace();
         }
@@ -55,7 +67,7 @@ public class Main extends Application {
         System.out.println("Srednia liczba klientow w kolejce do myjni " + Statistics.arithmeticMean(monitored.sizeQueueWash));
         System.out.println("Sredni czas tankowania samochodu: " + Statistics.arithmeticMean(monitored.serviceTime));
         System.out.println("Sredni czas mycia samochodu: " + Statistics.arithmeticMean(monitored.washTime));
-        System.out.println("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + environment.getLostClientAmount()/environment.simParameters.clientAmount);
+        System.out.println("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + ((double)environment.getLostClientAmount()/environment.simParameters.clientAmount));
 
         Diagram diagram = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba samochodow w kolejkach");
         diagram.add(monitored.sizeQueueFuel, Color.BLACK, "do stanowisk");

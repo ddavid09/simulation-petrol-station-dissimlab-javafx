@@ -1,6 +1,8 @@
 package pl.dawidziak.model;
 
 import dissimlab.simcore.BasicSimObj;
+import pl.dawidziak.view.EnvironmentChangeListener;
+import pl.dawidziak.view.SimAnimationController;
 
 public class Environment extends BasicSimObj {
     public final SimParameters simParameters;
@@ -16,6 +18,7 @@ public class Environment extends BasicSimObj {
     private int servicedClientAmount;
 
     public final Monitors monitors;
+    public final EnvironmentChangeListener environmentChangeListener;
 
     public Environment(SimParameters simParameters, Monitors monitors) {
         this.simParameters = simParameters;
@@ -34,6 +37,7 @@ public class Environment extends BasicSimObj {
         washStand = new Stand();
 
         this.monitors = monitors;
+        this.environmentChangeListener = new SimAnimationController();
 
         log();
     }

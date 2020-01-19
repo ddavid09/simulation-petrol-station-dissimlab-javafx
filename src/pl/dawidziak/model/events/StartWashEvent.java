@@ -9,6 +9,11 @@ public class StartWashEvent extends BasicSimEvent<Environment, Object> {
 
     private EnvironmentChangeListener listener;
 
+    public StartWashEvent(Environment entity, double delay, EnvironmentChangeListener listener) throws SimControlException {
+        super(entity, delay);
+        this.listener = listener;
+    }
+
     public StartWashEvent(Environment entity, double delay) throws SimControlException {
         super(entity, delay);
     }
@@ -24,7 +29,8 @@ public class StartWashEvent extends BasicSimEvent<Environment, Object> {
         RandomGenerator RandomGen = new RandomGenerator();
         Distribution distribution = environment.simParameters.PBtankTimeDistrib;
         double delay = RandomGen.generate(distribution);
-        new FinishWashEvent(environment, delay);
+        new FinishWashEvent(environment, delay, environment.environmentChangeListener);
+        listener.reprintEnvironment(environment);
     }
 
     public void setListener(EnvironmentChangeListener listener) {

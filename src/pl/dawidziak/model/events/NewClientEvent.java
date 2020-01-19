@@ -14,6 +14,11 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
 
     private static int clientCounter = 0;
 
+    public NewClientEvent(Environment entity, double delay, EnvironmentChangeListener listener) throws SimControlException  {
+        super(entity, delay);
+        this.listener = listener;
+    }
+
     public NewClientEvent(Environment entity, double delay) throws SimControlException  {
         super(entity, delay);
     }
@@ -35,9 +40,9 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
             serveClient(environment, mannedClient);
 
             double dalay = RandomGen.generate(environment.simParameters.clientDistrib);
-            new NewClientEvent(environment, dalay);
+            new NewClientEvent(environment, dalay, environment.environmentChangeListener);
         }
-
+        listener.reprintEnvironment(environment);
     }
 
     private void serveClient(Environment environment, Client client) throws SimControlException {
@@ -48,7 +53,7 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
                     for(int i=0; i<environment.fuelStands.length; i++){
                         if(environment.fuelStands[i].getStoredClient() == null){
                             environment.fuelStands[i].setStoredClient(client);
-                            new StartTankEvent(environment, 0, environment.fuelStands[i]);
+                            new StartTankEvent(environment, 0, environment.fuelStands[i], environment.environmentChangeListener);
                             break;
                         }else if(i == environment.fuelStands.length-1){
                             environment.queueToFuelStands.add(client);
@@ -72,7 +77,7 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
                     for(int i=0; i<environment.counterStands.length; i++){
                         if(environment.counterStands[i].getStoredClient() == null){
                             environment.counterStands[i].setStoredClient(client);
-                            new StartPayEvent(environment, 0, environment.counterStands[i]);
+                            new StartPayEvent(environment, 0, environment.counterStands[i], environment.environmentChangeListener);
                             break;
                         }else if(i == environment.counterStands.length-1){
                             environment.queueToCounters.add(client);

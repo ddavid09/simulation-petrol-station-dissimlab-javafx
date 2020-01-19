@@ -15,6 +15,11 @@ public class FinishPayEvent extends BasicSimEvent<Environment, Stand> {
 
     private EnvironmentChangeListener listener;
 
+    public FinishPayEvent(Environment entity, double delay, Stand o, EnvironmentChangeListener listener) throws SimControlException {
+        super(entity, delay, o);
+        this.listener = listener;
+    }
+
     public FinishPayEvent(Environment entity, double delay, Stand o) throws SimControlException {
         super(entity, delay, o);
     }
@@ -31,7 +36,7 @@ public class FinishPayEvent extends BasicSimEvent<Environment, Stand> {
         if(client.getClientType() != ClientType.ONLY_FUEL){
             if(environment.washStand.getStoredClient() == null){
                 environment.washStand.setStoredClient(client);
-                new StartWashEvent(environment, 0);
+                new StartWashEvent(environment, 0, environment.environmentChangeListener);
             }else{
                 environment.queueToWash.add(client);
                 environment.monitors.sizeQueueWash.setValue(environment.queueToWash.size());
@@ -44,10 +49,11 @@ public class FinishPayEvent extends BasicSimEvent<Environment, Stand> {
 
         if(!environment.queueToCounters.isEmpty()){
             stand.setStoredClient(environment.queueToCounters.remove(0));
-            new StartPayEvent(environment, 0, stand);
+            new StartPayEvent(environment, 0, stand, environment.environmentChangeListener);
         }else{
             stand.setStoredClient(null);
         }
+        listener.reprintEnvironment(environment);
     }
 
     public void setListener(EnvironmentChangeListener listener) {
