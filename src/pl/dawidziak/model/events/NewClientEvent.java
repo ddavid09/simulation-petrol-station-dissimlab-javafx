@@ -1,13 +1,20 @@
-package pl.dawidziak.model;
+package pl.dawidziak.model.events;
 
 import dissimlab.simcore.BasicSimEvent;
 import dissimlab.simcore.SimControlException;
+import pl.dawidziak.model.Client;
+import pl.dawidziak.model.ClientType;
+import pl.dawidziak.model.Environment;
+import pl.dawidziak.model.RandomGenerator;
+import pl.dawidziak.view.EnvironmentChangeListener;
 
-public class NewClientEvent extends BasicSimEvent<Environment, Object> {
+public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
+
+    private EnvironmentChangeListener listener;
 
     private static int clientCounter = 0;
 
-    public NewClientEvent(Environment entity, double delay) throws SimControlException {
+    public NewClientEvent(Environment entity, double delay) throws SimControlException  {
         super(entity, delay);
     }
 
@@ -79,6 +86,9 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object> {
         }
     }
 
+    public void setListener(EnvironmentChangeListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     protected void onTermination() throws SimControlException {

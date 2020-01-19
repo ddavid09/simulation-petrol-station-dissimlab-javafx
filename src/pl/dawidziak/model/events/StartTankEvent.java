@@ -1,12 +1,16 @@
-package pl.dawidziak.model;
+package pl.dawidziak.model.events;
 
 import dissimlab.simcore.BasicSimEvent;
 import dissimlab.simcore.SimControlException;
+import pl.dawidziak.model.*;
+import pl.dawidziak.view.EnvironmentChangeListener;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class StartTankEvent extends BasicSimEvent<Environment, Stand> {
+
+    private EnvironmentChangeListener listener;
 
     public StartTankEvent(Environment entity, double delay, Stand o) throws SimControlException {
         super(entity, delay, o);
@@ -37,6 +41,10 @@ public class StartTankEvent extends BasicSimEvent<Environment, Stand> {
         RandomGenerator RandomGen = new RandomGenerator();
         double delay = RandomGen.generate(distribution);
         new FinishTankEvent(environment, delay, stand);
+    }
+
+    public void setListener(EnvironmentChangeListener listener) {
+        this.listener = listener;
     }
 
     @Override

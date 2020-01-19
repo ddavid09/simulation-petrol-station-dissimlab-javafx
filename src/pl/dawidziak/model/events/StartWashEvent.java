@@ -1,12 +1,13 @@
-package pl.dawidziak.model;
+package pl.dawidziak.model.events;
 
 import dissimlab.simcore.BasicSimEvent;
 import dissimlab.simcore.SimControlException;
-
-import java.util.Arrays;
-import java.util.List;
+import pl.dawidziak.model.*;
+import pl.dawidziak.view.EnvironmentChangeListener;
 
 public class StartWashEvent extends BasicSimEvent<Environment, Object> {
+
+    private EnvironmentChangeListener listener;
 
     public StartWashEvent(Environment entity, double delay) throws SimControlException {
         super(entity, delay);
@@ -24,6 +25,10 @@ public class StartWashEvent extends BasicSimEvent<Environment, Object> {
         Distribution distribution = environment.simParameters.PBtankTimeDistrib;
         double delay = RandomGen.generate(distribution);
         new FinishWashEvent(environment, delay);
+    }
+
+    public void setListener(EnvironmentChangeListener listener) {
+        this.listener = listener;
     }
 
     @Override

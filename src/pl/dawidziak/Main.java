@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import pl.dawidziak.model.*;
 
 import dissimlab.simcore.SimManager;
+import pl.dawidziak.model.events.NewClientEvent;
 
 import java.awt.*;
 
@@ -22,12 +23,16 @@ public class Main extends Application {
         primaryStage.setTitle("Symulacja stacji Paliw - Wprowadz parametry");
         primaryStage.setScene(new Scene(root, 540, 400));
         primaryStage.show();
-        primaryStage.close(); //step over window show
+        //primaryStage.close(); //step over window show
+
+
+
     }
 
 
     public static void main(String[] args) {
         launch(args);
+
         SimManager simManager = new SimManager();
         Monitors monitored = new Monitors(simManager);
         Environment environment = mockEnvironment(monitored);

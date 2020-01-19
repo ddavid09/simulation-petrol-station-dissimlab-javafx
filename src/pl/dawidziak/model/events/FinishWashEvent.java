@@ -1,12 +1,15 @@
-package pl.dawidziak.model;
+package pl.dawidziak.model.events;
 
 import dissimlab.simcore.BasicSimEvent;
 import dissimlab.simcore.SimControlException;
-
-import java.util.Arrays;
-import java.util.List;
+import pl.dawidziak.model.Client;
+import pl.dawidziak.model.Environment;
+import pl.dawidziak.model.Stand;
+import pl.dawidziak.view.EnvironmentChangeListener;
 
 public class FinishWashEvent extends BasicSimEvent<Environment, Object> {
+
+    private EnvironmentChangeListener listener;
 
     public FinishWashEvent(Environment entity, double delay) throws SimControlException {
         super(entity, delay);
@@ -28,6 +31,10 @@ public class FinishWashEvent extends BasicSimEvent<Environment, Object> {
         }else{
             stand.setStoredClient(null);
         }
+    }
+
+    public void setListener(EnvironmentChangeListener listener) {
+        this.listener = listener;
     }
 
     @Override

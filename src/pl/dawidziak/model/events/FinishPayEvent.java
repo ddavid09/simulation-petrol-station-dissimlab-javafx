@@ -1,12 +1,19 @@
-package pl.dawidziak.model;
+package pl.dawidziak.model.events;
 
 import dissimlab.simcore.BasicSimEvent;
 import dissimlab.simcore.SimControlException;
+import pl.dawidziak.model.Client;
+import pl.dawidziak.model.ClientType;
+import pl.dawidziak.model.Environment;
+import pl.dawidziak.model.Stand;
+import pl.dawidziak.view.EnvironmentChangeListener;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class FinishPayEvent extends BasicSimEvent<Environment, Stand> {
+
+    private EnvironmentChangeListener listener;
 
     public FinishPayEvent(Environment entity, double delay, Stand o) throws SimControlException {
         super(entity, delay, o);
@@ -41,6 +48,10 @@ public class FinishPayEvent extends BasicSimEvent<Environment, Stand> {
         }else{
             stand.setStoredClient(null);
         }
+    }
+
+    public void setListener(EnvironmentChangeListener listener) {
+        this.listener = listener;
     }
 
     @Override

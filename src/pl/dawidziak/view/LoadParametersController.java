@@ -2,8 +2,11 @@ package pl.dawidziak.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -15,6 +18,7 @@ import pl.dawidziak.model.Environment;
 import pl.dawidziak.model.SimParameters;
 
 import javax.security.auth.login.CredentialNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -71,48 +75,59 @@ public class LoadParametersController implements Initializable {
 
     public void startButtonOnAction(ActionEvent actionEvent) {
 
-        DistribParameters = new ArrayList<>();
+//        DistribParameters = new ArrayList<>();
+//
+//        for(HBox hbox : paramsHBoxes){
+//            int paramsAmount = hbox.getChildren().size();
+//            Number[] params = new Number[paramsAmount];
+//            var array = hbox.getChildren();
+//            if(paramsAmount == 1){
+//                TextField tf = (TextField)array.get(0);
+//                params[0] = Double.parseDouble(tf.getText());
+//            }else if(paramsAmount == 2){
+//                TextField tf1 = (TextField)array.get(0);
+//                TextField tf2 = (TextField)array.get(1);
+//                params[0] = Double.parseDouble(tf1.getText());
+//                params[1] = Double.parseDouble(tf2.getText());
+//            }else{
+//                TextField tf1 = (TextField)array.get(0);
+//                TextField tf2 = (TextField)array.get(1);
+//                TextField tf3 = (TextField)array.get(2);
+//                params[0] = Double.parseDouble(tf1.getText());
+//                params[1] = Double.parseDouble(tf2.getText());
+//                params[2] = Double.parseDouble(tf3.getText());
+//            }
+//            DistribParameters.add(params);
+//        }
+//
+//        int clientAmount = Integer.parseInt(clientAmountInput.getText());
+//        int postAmount = Integer.parseInt(postAmountInput.getText());
+//        int postQueueSize = Integer.parseInt(postQueueSizeInput.getText());
+//        int counterAmount = Integer.parseInt(counterAmountInput.getText());
+//        //Distributions
+//        Distribution clientDistrib = new Distribution(clientDistribComboBox.getValue(), DistribParameters.get(0));
+//        Distribution PBtankTimeDistrib = new Distribution(PBtimeDistribComboBox.getValue(), DistribParameters.get(1));
+//        Distribution ONtankTimeDistrib = new Distribution(ONtimeDistribComboBox.getValue(), DistribParameters.get(2));
+//        Distribution LPGtankTimeDistrib = new Distribution(LPGtimeDistribComboBox.getValue(), DistribParameters.get(3));
+//        Distribution carWashChoiceDistrib = new Distribution(washDistribComboBox.getValue(), DistribParameters.get(4));
+//        Distribution fuelChoiceDistrib = new Distribution(fuelTypeDistribComboBox.getValue(), DistribParameters.get(5));
+//
+//        //SimParameters
+//        var simParams = new SimParameters(clientAmount, postAmount, postQueueSize, counterAmount, clientDistrib, fuelChoiceDistrib, PBtankTimeDistrib, LPGtankTimeDistrib, ONtankTimeDistrib, carWashChoiceDistrib);
+//        //Environment
+//        //new Environment(simParams);
 
-        for(HBox hbox : paramsHBoxes){
-            int paramsAmount = hbox.getChildren().size();
-            Number[] params = new Number[paramsAmount];
-            var array = hbox.getChildren();
-            if(paramsAmount == 1){
-                TextField tf = (TextField)array.get(0);
-                params[0] = Double.parseDouble(tf.getText());
-            }else if(paramsAmount == 2){
-                TextField tf1 = (TextField)array.get(0);
-                TextField tf2 = (TextField)array.get(1);
-                params[0] = Double.parseDouble(tf1.getText());
-                params[1] = Double.parseDouble(tf2.getText());
-            }else{
-                TextField tf1 = (TextField)array.get(0);
-                TextField tf2 = (TextField)array.get(1);
-                TextField tf3 = (TextField)array.get(2);
-                params[0] = Double.parseDouble(tf1.getText());
-                params[1] = Double.parseDouble(tf2.getText());
-                params[2] = Double.parseDouble(tf3.getText());
-            }
-            DistribParameters.add(params);
+        Parent simRoot;
+        try{
+            simRoot = FXMLLoader.load(getClass().getResource("simAnimation.fxml"));
+            Stage simStage = new Stage();
+            simStage.setScene(new Scene(simRoot, 1300, 810));
+            simStage.setTitle("Symulacja");
+            simStage.show();
         }
-
-        int clientAmount = Integer.parseInt(clientAmountInput.getText());
-        int postAmount = Integer.parseInt(postAmountInput.getText());
-        int postQueueSize = Integer.parseInt(postQueueSizeInput.getText());
-        int counterAmount = Integer.parseInt(counterAmountInput.getText());
-        //Distributions
-        Distribution clientDistrib = new Distribution(clientDistribComboBox.getValue(), DistribParameters.get(0));
-        Distribution PBtankTimeDistrib = new Distribution(PBtimeDistribComboBox.getValue(), DistribParameters.get(1));
-        Distribution ONtankTimeDistrib = new Distribution(ONtimeDistribComboBox.getValue(), DistribParameters.get(2));
-        Distribution LPGtankTimeDistrib = new Distribution(LPGtimeDistribComboBox.getValue(), DistribParameters.get(3));
-        Distribution carWashChoiceDistrib = new Distribution(washDistribComboBox.getValue(), DistribParameters.get(4));
-        Distribution fuelChoiceDistrib = new Distribution(fuelTypeDistribComboBox.getValue(), DistribParameters.get(5));
-
-        //SimParameters
-        var simParams = new SimParameters(clientAmount, postAmount, postQueueSize, counterAmount, clientDistrib, fuelChoiceDistrib, PBtankTimeDistrib, LPGtankTimeDistrib, ONtankTimeDistrib, carWashChoiceDistrib);
-        //Environment
-        //new Environment(simParams);
-
+        catch (IOException e){
+            e.printStackTrace();
+        }
         Stage stage = (Stage) gridLayout.getScene().getWindow();
         stage.close();
     }
