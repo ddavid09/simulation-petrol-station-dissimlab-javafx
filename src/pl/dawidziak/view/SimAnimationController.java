@@ -1,18 +1,30 @@
 package pl.dawidziak.view;
 
+import dissimlab.monitors.Statistics;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import pl.dawidziak.model.Environment;
+import pl.dawidziak.model.Monitors;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class SimAnimationController implements Initializable, EnvironmentChangeListener {
+
+    @FXML
+    public Label standsQueueStatusLabel;
+    @FXML
+    public Label countersQueueStatusLabel;
+    @FXML
+    public Label washQueueStatusLabel;
+    @FXML
+    public VBox simResultsInfoVBox;
 
     private Environment simEnvironment;
 
@@ -66,14 +78,51 @@ public class SimAnimationController implements Initializable, EnvironmentChangeL
         counterStandImg = new Image("stand-c.png");
         washStandImg = new Image("stand-cw.png");
 
-        
-
-
+        tankStandsGC = standsLayer.getGraphicsContext2D();
+        tankQueueGC = standsQueueLayer.getGraphicsContext2D();
+        countersQueueGC = countersQueueLayer.getGraphicsContext2D();
+        countersStandsGC = countersLayer.getGraphicsContext2D();
+        washQueueGC = washQueueLayer.getGraphicsContext2D();
+        washStandGC = washLayer.getGraphicsContext2D();
 
     }
 
     @Override
     public void reprintEnvironment() {
-        int clientsAmount = simEnvironment.simParameters.clientAmount;
+        int simhuj = simEnvironment.simParameters.clientAmount;
+        standsQueueStatusLabel.setText(simEnvironment.queueToFuelStands.size() + "/" + simEnvironment.simParameters.postQueueSize);
+        countersQueueStatusLabel.setText(simEnvironment.queueToCounters.size() + "");
+        washQueueStatusLabel.setText(simEnvironment.queueToWash.size() + "");
+    }
+
+    public void drawParameters() {
+        for(int i=0; i<simEnvironment.simParameters.postAmount; i++){
+            tankStandsGC.drawImage(fuelStandImg, 10+(150*i), 20);
+        }
+
+        for(int i=0; i<simEnvironment.simParameters.counterAmount; i++){
+            countersStandsGC.drawImage(counterStandImg, 10+(150*i), 20);
+        }
+
+        washStandGC.drawImage(washStandImg, 10, 20);
+    }
+
+    public void printSimResults(Monitors monitored){
+        var container = simResultsInfoVBox.getChildren();
+        container.add(new Label("Liczba obsluzonych klientow: " + simEnvironment.getServicedClientAmount()));
+        container.add(new Label("Liczba straconych klientow: " + simEnvironment.getLostClientAmount()));
+        container.add(new Label("Srednia liczba klientow w kolejce do stanowisk: " + Statistics.arithmeticMean(monitored.sizeQueueFuel)));
+        container.add(new Label("Srednia liczba klientow w kolejce do myjni " + Statistics.arithmeticMean(monitored.sizeQueueWash)));
+        container.add(new Label("Sredni czas tankowania samochodu: " + Statistics.arithmeticMean(monitored.serviceTime)));
+        container.add(new Label("Sredni czas mycia samochodu: " + Statistics.arithmeticMean(monitored.washTime)));
+        container.add(new Label("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + ((double)simEnvironment.getLostClientAmount()/simEnvironment.simParameters.clientAmount)));
+
+//        System.out.println("Liczba obsluzonych klientow: " + environment.getServicedClientAmount());
+//        System.out.println("Liczba straconych klientow: " + environment.getLostClientAmount());
+//        System.out.println("Srednia liczba klientow w kolejce do stanowisk: " + Statistics.arithmeticMean(monitored.sizeQueueFuel));
+//        System.out.println("Srednia liczba klientow w kolejce do myjni " + Statistics.arithmeticMean(monitored.sizeQueueWash));
+//        System.out.println("Sredni czas tankowania samochodu: " + Statistics.arithmeticMean(monitored.serviceTime));
+//        System.out.println("Sredni czas mycia samochodu: " + Statistics.arithmeticMean(monitored.washTime));
+//        System.out.println("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + ((double)environment.getLostClientAmount()/environment.simParameters.clientAmount));
     }
 }

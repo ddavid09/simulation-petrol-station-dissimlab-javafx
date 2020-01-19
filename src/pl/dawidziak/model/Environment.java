@@ -1,11 +1,13 @@
 package pl.dawidziak.model;
 
 import dissimlab.simcore.BasicSimObj;
+import dissimlab.simcore.SimManager;
 import pl.dawidziak.view.EnvironmentChangeListener;
 import pl.dawidziak.view.SimAnimationController;
 
 public class Environment extends BasicSimObj {
     public final SimParameters simParameters;
+    public final SimManager simManager;
 
     public final LimitedQueue queueToFuelStands;
     public final Queue queueToCounters;
@@ -20,9 +22,9 @@ public class Environment extends BasicSimObj {
     public final Monitors monitors;
     public final EnvironmentChangeListener environmentChangeListener;
 
-    public Environment(SimParameters simParameters, Monitors monitors, EnvironmentChangeListener animationController) {
+    public Environment(SimParameters simParameters,SimManager simManager , Monitors monitors, EnvironmentChangeListener animationController) {
         this.simParameters = simParameters;
-
+        this.simManager = simManager;
         queueToFuelStands = new LimitedQueue(simParameters.postQueueSize);
         queueToCounters = new Queue();
         queueToWash = new Queue();

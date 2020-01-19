@@ -38,11 +38,17 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
             }
             System.out.println(String.format("%-14.4f", simTime()) + "Utworzono klienta nr " + mannedClient.idNumber + " " + mannedClient.fuelTypeToString());
             serveClient(environment, mannedClient);
-
             double dalay = RandomGen.generate(environment.simParameters.clientDistrib);
             new NewClientEvent(environment, dalay, environment.environmentChangeListener);
         }
         listener.reprintEnvironment();
+        environment.simManager.pauseSimulation();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        environment.simManager.resumeSimulation();
     }
 
     private void serveClient(Environment environment, Client client) throws SimControlException {

@@ -30,22 +30,25 @@ public class Main extends Application {
 
         Parent simRoot;
         try{
+            SimManager simManager = new SimManager();
+            Monitors monitored = new Monitors(simManager);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("view/simAnimation.fxml"));
             simRoot = loader.load();
             SimAnimationController controller = loader.getController();
             Stage simStage = new Stage();
-            simStage.setScene(new Scene(simRoot, 1300, 810));
+            simStage.setScene(new Scene(simRoot, 1300, 838));
             simStage.setTitle("Symulacja");
+
+            Environment environment = mockEnvironment(monitored, controller, simManager);
+            controller.setEnvironment(environment);
+            controller.drawParameters();
 
             simStage.show();
 
-            SimManager simManager = new SimManager();
-            Monitors monitored = new Monitors(simManager);
-            Environment environment = mockEnvironment(monitored, controller);
-            controller.setEnvironment(environment);
-
             simulation(controller, environment, simManager, monitored);
 
+            controller.printSimResults(monitored);
 
 
 
@@ -58,9 +61,6 @@ public class Main extends Application {
     }
 
     private static void simulation(EnvironmentChangeListener listener, Environment environment, SimManager simManager, Monitors monitored){
-
-
-
         try {
             new NewClientEvent(environment, 0, environment.environmentChangeListener);
         } catch (SimControlException e) {
@@ -101,10 +101,10 @@ public class Main extends Application {
         launch(args);
     }
 
-    private static Environment mockEnvironment(Monitors monitors, EnvironmentChangeListener listener){
+    private static Environment mockEnvironment(Monitors monitors, EnvironmentChangeListener listener, SimManager simManager){
 
         int clientAmount = 500;
-        int postAmount = 4;
+        int postAmount = 7; //wizualizacja max 7
         int postQueueSize = 80;
         int counterAmount = 3;
 
@@ -118,7 +118,7 @@ public class Main extends Application {
         //SimParameters
         var simParams = new SimParameters(clientAmount, postAmount, postQueueSize, counterAmount, clientDistrib, fuelChoiceDistrib, PBtankTimeDistrib, LPGtankTimeDistrib, ONtankTimeDistrib, carWashChoiceDistrib);
         //Environment
-        return new Environment(simParams, monitors, listener);
+        return new Environment(simParams, simManager, monitors, listener);
     }
 
 }
