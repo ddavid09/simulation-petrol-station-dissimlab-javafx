@@ -89,8 +89,7 @@ public class SimAnimationController implements Initializable, EnvironmentChangeL
 
     @Override
     public void reprintEnvironment() {
-        int simhuj = simEnvironment.simParameters.clientAmount;
-        standsQueueStatusLabel.setText(simEnvironment.queueToFuelStands.size() + "/" + simEnvironment.simParameters.postQueueSize);
+        standsQueueStatusLabel.setText("HUJ");
         countersQueueStatusLabel.setText(simEnvironment.queueToCounters.size() + "");
         washQueueStatusLabel.setText(simEnvironment.queueToWash.size() + "");
     }
@@ -117,12 +116,6 @@ public class SimAnimationController implements Initializable, EnvironmentChangeL
         container.add(new Label("Sredni czas mycia samochodu: " + Statistics.arithmeticMean(monitored.washTime)));
         container.add(new Label("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + ((double)simEnvironment.getLostClientAmount()/simEnvironment.simParameters.clientAmount)));
 
-//        System.out.println("Liczba obsluzonych klientow: " + environment.getServicedClientAmount());
-//        System.out.println("Liczba straconych klientow: " + environment.getLostClientAmount());
-//        System.out.println("Srednia liczba klientow w kolejce do stanowisk: " + Statistics.arithmeticMean(monitored.sizeQueueFuel));
-//        System.out.println("Srednia liczba klientow w kolejce do myjni " + Statistics.arithmeticMean(monitored.sizeQueueWash));
-//        System.out.println("Sredni czas tankowania samochodu: " + Statistics.arithmeticMean(monitored.serviceTime));
-//        System.out.println("Sredni czas mycia samochodu: " + Statistics.arithmeticMean(monitored.washTime));
-//        System.out.println("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + ((double)environment.getLostClientAmount()/environment.simParameters.clientAmount));
+
     }
 }

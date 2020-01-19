@@ -46,8 +46,9 @@
             <ComboBox fx:id="LPGtimeDistribComboBox" onAction="#distributionOnChange" prefWidth="150.0" promptText="Wybierz" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <ComboBox fx:id="washDistribComboBox" onAction="#distributionOnChange" prefWidth="150.0" promptText="Wybierz" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <ComboBox fx:id="fuelTypeDistribComboBox" onAction="#distributionOnChange" prefWidth="150.0" promptText="Wybierz" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <Button fx:id="startButton" mnemonicParsing="false" onAction="#startButtonOnAction" prefHeight="25.0" prefWidth="128.0" text="Start" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
+            <Button fx:id="startButton" mnemonicParsing="false" onAction="#startButtonOnAction" prefHeight="25.0" prefWidth="99.0" text="Start" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Button fx:id="defaultBtn" mnemonicParsing="false" onAction="#loadDefaultParams" prefHeight="25.0" prefWidth="99.0" text="Domyslne" GridPane.columnIndex="2" GridPane.rowIndex="10" />
          </children>
       </GridPane>
    </children>
