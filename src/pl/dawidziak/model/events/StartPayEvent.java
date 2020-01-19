@@ -36,7 +36,7 @@ public class StartPayEvent extends BasicSimEvent<Environment, Stand> {
         Distribution distribution= environment.simParameters.PBtankTimeDistrib;
         double delay = RandomGen.generate(distribution);
         new FinishPayEvent(environment, delay/3, stand, environment.environmentChangeListener);
-        listener.reprintEnvironment(environment);
+        listener.reprintEnvironment();
     }
 
     public void setListener(EnvironmentChangeListener listener) {

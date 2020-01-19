@@ -30,7 +30,7 @@ public class StartWashEvent extends BasicSimEvent<Environment, Object> {
         Distribution distribution = environment.simParameters.PBtankTimeDistrib;
         double delay = RandomGen.generate(distribution);
         new FinishWashEvent(environment, delay, environment.environmentChangeListener);
-        listener.reprintEnvironment(environment);
+        listener.reprintEnvironment();
     }
 
     public void setListener(EnvironmentChangeListener listener) {

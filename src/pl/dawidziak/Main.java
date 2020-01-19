@@ -12,6 +12,8 @@ import pl.dawidziak.model.*;
 
 import dissimlab.simcore.SimManager;
 import pl.dawidziak.model.events.NewClientEvent;
+import pl.dawidziak.view.EnvironmentChangeListener;
+import pl.dawidziak.view.SimAnimationController;
 
 import java.awt.*;
 import java.io.IOException;
@@ -28,11 +30,25 @@ public class Main extends Application {
 
         Parent simRoot;
         try{
-            simRoot = FXMLLoader.load(getClass().getResource("view/simAnimation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/simAnimation.fxml"));
+            simRoot = loader.load();
+            SimAnimationController controller = loader.getController();
             Stage simStage = new Stage();
             simStage.setScene(new Scene(simRoot, 1300, 810));
             simStage.setTitle("Symulacja");
+
             simStage.show();
+
+            SimManager simManager = new SimManager();
+            Monitors monitored = new Monitors(simManager);
+            Environment environment = mockEnvironment(monitored, controller);
+            controller.setEnvironment(environment);
+
+            simulation(controller, environment, simManager, monitored);
+
+
+
+
         }
         catch (IOException e){
             e.printStackTrace();
@@ -41,13 +57,9 @@ public class Main extends Application {
 
     }
 
+    private static void simulation(EnvironmentChangeListener listener, Environment environment, SimManager simManager, Monitors monitored){
 
-    public static void main(String[] args) {
-        launch(args);
 
-        SimManager simManager = new SimManager();
-        Monitors monitored = new Monitors(simManager);
-        Environment environment = mockEnvironment(monitored);
 
         try {
             new NewClientEvent(environment, 0, environment.environmentChangeListener);
@@ -82,10 +94,14 @@ public class Main extends Application {
         Diagram diagramla = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba rezygnacji");
         diagramla.add(monitored.lostClient, Color.BLUE);
         diagramla.show();
-
     }
 
-    private static Environment mockEnvironment(Monitors monitors){
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    private static Environment mockEnvironment(Monitors monitors, EnvironmentChangeListener listener){
 
         int clientAmount = 500;
         int postAmount = 4;
@@ -102,7 +118,7 @@ public class Main extends Application {
         //SimParameters
         var simParams = new SimParameters(clientAmount, postAmount, postQueueSize, counterAmount, clientDistrib, fuelChoiceDistrib, PBtankTimeDistrib, LPGtankTimeDistrib, ONtankTimeDistrib, carWashChoiceDistrib);
         //Environment
-        return new Environment(simParams, monitors);
+        return new Environment(simParams, monitors, listener);
     }
 
 }

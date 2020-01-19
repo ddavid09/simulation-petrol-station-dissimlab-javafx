@@ -42,7 +42,7 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
             double dalay = RandomGen.generate(environment.simParameters.clientDistrib);
             new NewClientEvent(environment, dalay, environment.environmentChangeListener);
         }
-        listener.reprintEnvironment(environment);
+        listener.reprintEnvironment();
     }
 
     private void serveClient(Environment environment, Client client) throws SimControlException {

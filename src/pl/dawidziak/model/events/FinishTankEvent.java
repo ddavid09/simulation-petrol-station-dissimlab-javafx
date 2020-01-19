@@ -74,7 +74,7 @@ public class FinishTankEvent extends BasicSimEvent<Environment, Stand> {
             stand.setStoredClient(null);
         }
 
-        listener.reprintEnvironment(environment);
+        listener.reprintEnvironment();
     }
 
     public void setListener(EnvironmentChangeListener listener) {

@@ -46,7 +46,7 @@ public class StartTankEvent extends BasicSimEvent<Environment, Stand> {
         RandomGenerator RandomGen = new RandomGenerator();
         double delay = RandomGen.generate(distribution);
         new FinishTankEvent(environment, delay, stand, environment.environmentChangeListener);
-        listener.reprintEnvironment(environment);
+        listener.reprintEnvironment();
     }
 
     public void setListener(EnvironmentChangeListener listener) {

@@ -53,7 +53,7 @@ public class FinishPayEvent extends BasicSimEvent<Environment, Stand> {
         }else{
             stand.setStoredClient(null);
         }
-        listener.reprintEnvironment(environment);
+        listener.reprintEnvironment();
     }
 
     public void setListener(EnvironmentChangeListener listener) {

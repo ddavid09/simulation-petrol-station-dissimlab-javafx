@@ -36,7 +36,7 @@ public class FinishWashEvent extends BasicSimEvent<Environment, Object> {
         }else{
             stand.setStoredClient(null);
         }
-        listener.reprintEnvironment(environment);
+        listener.reprintEnvironment();
     }
 
     public void setListener(EnvironmentChangeListener listener) {
