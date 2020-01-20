@@ -20,9 +20,8 @@ public class Environment extends BasicSimObj {
     private int servicedClientAmount;
 
     public final Monitors monitors;
-    public final EnvironmentChangeListener environmentChangeListener;
 
-    public Environment(SimParameters simParameters,SimManager simManager , Monitors monitors, EnvironmentChangeListener animationController) {
+    public Environment(SimParameters simParameters,SimManager simManager , Monitors monitors) {
         this.simParameters = simParameters;
         this.simManager = simManager;
         queueToFuelStands = new LimitedQueue(simParameters.postQueueSize);
@@ -39,8 +38,6 @@ public class Environment extends BasicSimObj {
         washStand = new Stand();
 
         this.monitors = monitors;
-        this.environmentChangeListener = animationController;
-        animationController.setEnvironment(this);
 
         log();
     }

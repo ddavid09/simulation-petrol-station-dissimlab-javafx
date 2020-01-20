@@ -10,13 +10,6 @@ import java.util.List;
 
 public class StartTankEvent extends BasicSimEvent<Environment, Stand> {
 
-    private EnvironmentChangeListener listener;
-
-    public  StartTankEvent(Environment entity, double delay, Stand o, EnvironmentChangeListener listener) throws SimControlException{
-        super(entity, delay, o);
-        this.listener = listener;
-    }
-
     public StartTankEvent(Environment entity, double delay, Stand o) throws SimControlException {
         super(entity, delay, o);
     }
@@ -45,12 +38,7 @@ public class StartTankEvent extends BasicSimEvent<Environment, Stand> {
         }
         RandomGenerator RandomGen = new RandomGenerator();
         double delay = RandomGen.generate(distribution);
-        new FinishTankEvent(environment, delay, stand, environment.environmentChangeListener);
-        listener.reprintEnvironment();
-    }
-
-    public void setListener(EnvironmentChangeListener listener) {
-        this.listener = listener;
+        new FinishTankEvent(environment, delay, stand);
     }
 
     @Override

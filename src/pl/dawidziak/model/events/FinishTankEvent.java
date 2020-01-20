@@ -10,13 +10,6 @@ import java.util.List;
 
 public class FinishTankEvent extends BasicSimEvent<Environment, Stand> {
 
-    private EnvironmentChangeListener listener;
-
-    public FinishTankEvent(Environment entity, double delay, Stand o, EnvironmentChangeListener listener) throws SimControlException {
-        super(entity, delay, o);
-        this.listener = listener;
-    }
-
     public FinishTankEvent(Environment entity, double delay, Stand o) throws SimControlException {
         super(entity, delay, o);
     }
@@ -54,7 +47,7 @@ public class FinishTankEvent extends BasicSimEvent<Environment, Stand> {
                 if(environment.counterStands[i].getStoredClient() == null){
                     environment.counterStands[i].setStoredClient(client);
 
-                    new StartPayEvent(environment, 0, environment.counterStands[i], environment.environmentChangeListener);
+                    new StartPayEvent(environment, 0, environment.counterStands[i]);
                     break;
                 }else if(i == environment.counterStands.length-1){
                     environment.queueToCounters.add(client);
@@ -69,17 +62,13 @@ public class FinishTankEvent extends BasicSimEvent<Environment, Stand> {
         if(!environment.queueToFuelStands.isEmpty()){
             stand.setStoredClient(environment.queueToFuelStands.remove(0));
             environment.monitors.sizeQueueFuel.setValue(environment.queueToFuelStands.size());
-            new StartTankEvent(environment, 0, stand, environment.environmentChangeListener);
+            new StartTankEvent(environment, 0, stand);
         }else{
             stand.setStoredClient(null);
         }
 
-        listener.reprintEnvironment();
     }
 
-    public void setListener(EnvironmentChangeListener listener) {
-        this.listener = listener;
-    }
 
     @Override
     protected void onTermination() throws SimControlException {

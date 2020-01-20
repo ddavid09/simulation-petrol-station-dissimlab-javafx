@@ -135,30 +135,14 @@ public class LoadParametersController implements Initializable {
             simStage.setScene(new Scene(simRoot, 1300, 838));
             simStage.setTitle("Symulacja");
 
-            Environment environment = new Environment(simParams, simManager, monitored, controller);
+            Environment environment = new Environment(simParams, simManager, monitored);
             controller.setEnvironment(environment);
             controller.drawParameters();
 
-
-            Task task = new Task<Void>(){
-                @Override
-                public Void call() throws Exception {
-                    while(true){
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                simulation(controller, environment, simManager, monitored);
-                            }
-                        });
-                    }
-                }
-            };
-
-            Thread thread = new Thread(task);
-            thread.setDaemon(true);
-            thread.start();
+            startTask(environment);
 
             simStage.show();
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -168,43 +152,37 @@ public class LoadParametersController implements Initializable {
 
     }
 
-    private static void simulation(EnvironmentChangeListener listener, Environment environment, SimManager simManager, Monitors monitored){
+    public void startTask(Environment sim)
+    {
+        // Create a Runnable
+        Runnable task = new Runnable()
+        {
+            public void run()
+            {
+                simulation(sim);
+            }
+        };
+
+        // Run the task in a background thread
+        Thread backgroundThread = new Thread(task);
+        // Terminate the running thread if the application exits
+        backgroundThread.setDaemon(true);
+        // Start the thread
+        backgroundThread.start();
+    }
+
+    private static void simulation(Environment environment) {
         try {
-            new NewClientEvent(environment, 0, environment.environmentChangeListener);
+            new NewClientEvent(environment, 0);
         } catch (SimControlException e) {
             e.printStackTrace();
         }
 
         try {
-            simManager.startSimulation();
+            environment.simManager.startSimulation();
         } catch (SimControlException e) {
             e.printStackTrace();
         }
-
-        System.out.println("Liczba obsluzonych klientow: " + environment.getServicedClientAmount());
-        System.out.println("Liczba straconych klientow: " + environment.getLostClientAmount());
-        System.out.println("Srednia liczba klientow w kolejce do stanowisk: " + Statistics.arithmeticMean(monitored.sizeQueueFuel));
-        System.out.println("Srednia liczba klientow w kolejce do myjni " + Statistics.arithmeticMean(monitored.sizeQueueWash));
-        System.out.println("Sredni czas tankowania samochodu: " + Statistics.arithmeticMean(monitored.serviceTime));
-        System.out.println("Sredni czas mycia samochodu: " + Statistics.arithmeticMean(monitored.washTime));
-        System.out.println("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + ((double)environment.getLostClientAmount()/environment.simParameters.clientAmount));
-
-        Diagram diagram = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba samochodow w kolejkach");
-        diagram.add(monitored.sizeQueueFuel, Color.BLACK, "do stanowisk");
-        diagram.add(monitored.sizeQueueWash, Color.RED, "do myjni");
-        diagram.show();
-
-        Diagram diagramst = new Diagram(Diagram.DiagramType.DISTRIBUTION, "Czas tankowania/mycia samochodu");
-        diagramst.add(monitored.serviceTime, Color.BLACK, "tankowania");
-        diagramst.add(monitored.washTime, Color.RED, "mycia");
-        diagramst.show();
-
-        Diagram diagramla = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba rezygnacji");
-        diagramla.add(monitored.lostClient, Color.BLUE);
-        diagramla.show();
-
-        SimAnimationController controller = (SimAnimationController)listener;
-        controller.printSimResults(monitored);
     }
 
     public void loadDefaultParams(ActionEvent actionEvent){

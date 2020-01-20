@@ -7,13 +7,6 @@ import pl.dawidziak.view.EnvironmentChangeListener;
 
 public class StartWashEvent extends BasicSimEvent<Environment, Object> {
 
-    private EnvironmentChangeListener listener;
-
-    public StartWashEvent(Environment entity, double delay, EnvironmentChangeListener listener) throws SimControlException {
-        super(entity, delay);
-        this.listener = listener;
-    }
-
     public StartWashEvent(Environment entity, double delay) throws SimControlException {
         super(entity, delay);
     }
@@ -29,12 +22,7 @@ public class StartWashEvent extends BasicSimEvent<Environment, Object> {
         RandomGenerator RandomGen = new RandomGenerator();
         Distribution distribution = environment.simParameters.PBtankTimeDistrib;
         double delay = RandomGen.generate(distribution);
-        new FinishWashEvent(environment, delay, environment.environmentChangeListener);
-        listener.reprintEnvironment();
-    }
-
-    public void setListener(EnvironmentChangeListener listener) {
-        this.listener = listener;
+        new FinishWashEvent(environment, delay);
     }
 
     @Override

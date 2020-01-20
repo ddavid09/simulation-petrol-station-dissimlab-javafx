@@ -10,14 +10,7 @@ import pl.dawidziak.view.EnvironmentChangeListener;
 
 public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
 
-    private EnvironmentChangeListener listener;
-
     private static int clientCounter = 0;
-
-    public NewClientEvent(Environment entity, double delay, EnvironmentChangeListener listener) throws SimControlException  {
-        super(entity, delay);
-        this.listener = listener;
-    }
 
     public NewClientEvent(Environment entity, double delay) throws SimControlException  {
         super(entity, delay);
@@ -39,9 +32,8 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
             System.out.println(String.format("%-14.4f", simTime()) + "Utworzono klienta nr " + mannedClient.idNumber + " " + mannedClient.fuelTypeToString());
             serveClient(environment, mannedClient);
             double dalay = RandomGen.generate(environment.simParameters.clientDistrib);
-            new NewClientEvent(environment, dalay, environment.environmentChangeListener);
+            new NewClientEvent(environment, dalay);
         }
-        listener.reprintEnvironment();
         environment.simManager.pauseSimulation();
         try {
             Thread.sleep(500);
@@ -59,7 +51,7 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
                     for(int i=0; i<environment.fuelStands.length; i++){
                         if(environment.fuelStands[i].getStoredClient() == null){
                             environment.fuelStands[i].setStoredClient(client);
-                            new StartTankEvent(environment, 0, environment.fuelStands[i], environment.environmentChangeListener);
+                            new StartTankEvent(environment, 0, environment.fuelStands[i]);
                             break;
                         }else if(i == environment.fuelStands.length-1){
                             environment.queueToFuelStands.add(client);
@@ -83,7 +75,7 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
                     for(int i=0; i<environment.counterStands.length; i++){
                         if(environment.counterStands[i].getStoredClient() == null){
                             environment.counterStands[i].setStoredClient(client);
-                            new StartPayEvent(environment, 0, environment.counterStands[i], environment.environmentChangeListener);
+                            new StartPayEvent(environment, 0, environment.counterStands[i]);
                             break;
                         }else if(i == environment.counterStands.length-1){
                             environment.queueToCounters.add(client);
@@ -95,10 +87,6 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
                     System.out.println(String.format("%-14.4f", simTime()) + "Dodano klienta nr " + client.idNumber + " do kolejki oczekiwania do kas\t\t\t stan kolejki: " + environment.queueToCounters.size());
                 }
         }
-    }
-
-    public void setListener(EnvironmentChangeListener listener) {
-        this.listener = listener;
     }
 
     @Override

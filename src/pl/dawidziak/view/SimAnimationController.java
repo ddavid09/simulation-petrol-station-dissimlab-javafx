@@ -1,6 +1,14 @@
 package pl.dawidziak.view;
 
+import dissimlab.monitors.Diagram;
 import dissimlab.monitors.Statistics;
+import dissimlab.simcore.SimControlException;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -8,14 +16,18 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import pl.dawidziak.model.Environment;
 import pl.dawidziak.model.Monitors;
+import pl.dawidziak.model.events.NewClientEvent;
 
+import java.awt.*;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class SimAnimationController implements Initializable, EnvironmentChangeListener {
+public class SimAnimationController implements Initializable {
 
     @FXML
     public Label standsQueueStatusLabel;
@@ -65,7 +77,6 @@ public class SimAnimationController implements Initializable, EnvironmentChangeL
     private GraphicsContext washQueueGC;
     private GraphicsContext washStandGC;
 
-    @Override
     public void setEnvironment(Environment environment){
         simEnvironment = environment;
     }
@@ -85,13 +96,56 @@ public class SimAnimationController implements Initializable, EnvironmentChangeL
         washQueueGC = washQueueLayer.getGraphicsContext2D();
         washStandGC = washLayer.getGraphicsContext2D();
 
+        final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1),
+                (EventHandler) event -> {
+                    updateEnvironment();
+                }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
-    @Override
-    public void reprintEnvironment() {
-        standsQueueStatusLabel.setText("HUJ");
-        countersQueueStatusLabel.setText(simEnvironment.queueToCounters.size() + "");
-        washQueueStatusLabel.setText(simEnvironment.queueToWash.size() + "");
+    private void updateEnvironment() {
+
+        standsQueueStatusLabel.setText(simEnvironment.queueToFuelStands.size() + "/" + simEnvironment.simParameters.clientAmount);
+        countersQueueStatusLabel.setText(LocalTime.now().toString());
+        //washQueueStatusLabel;
+    }
+
+    private static void simulation(Environment environment){
+        try {
+            new NewClientEvent(environment, 0);
+        } catch (SimControlException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            environment.simManager.startSimulation();
+        } catch (SimControlException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Liczba obsluzonych klientow: " + environment.getServicedClientAmount());
+        System.out.println("Liczba straconych klientow: " + environment.getLostClientAmount());
+        System.out.println("Srednia liczba klientow w kolejce do stanowisk: " + Statistics.arithmeticMean(environment.monitors.sizeQueueFuel));
+        System.out.println("Srednia liczba klientow w kolejce do myjni " + Statistics.arithmeticMean(environment.monitors.sizeQueueWash));
+        System.out.println("Sredni czas tankowania samochodu: " + Statistics.arithmeticMean(environment.monitors.serviceTime));
+        System.out.println("Sredni czas mycia samochodu: " + Statistics.arithmeticMean(environment.monitors.washTime));
+        System.out.println("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + ((double)environment.getLostClientAmount()/environment.simParameters.clientAmount));
+
+        Diagram diagram = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba samochodow w kolejkach");
+        diagram.add(environment.monitors.sizeQueueFuel, Color.BLACK, "do stanowisk");
+        diagram.add(environment.monitors.sizeQueueWash, Color.RED, "do myjni");
+        diagram.show();
+
+        Diagram diagramst = new Diagram(Diagram.DiagramType.DISTRIBUTION, "Czas tankowania/mycia samochodu");
+        diagramst.add(environment.monitors.serviceTime, Color.BLACK, "tankowania");
+        diagramst.add(environment.monitors.washTime, Color.RED, "mycia");
+        diagramst.show();
+
+        Diagram diagramla = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba rezygnacji");
+        diagramla.add(environment.monitors.lostClient, Color.BLUE);
+        diagramla.show();
+
     }
 
     public void drawParameters() {
@@ -105,6 +159,7 @@ public class SimAnimationController implements Initializable, EnvironmentChangeL
 
         washStandGC.drawImage(washStandImg, 10, 20);
     }
+
 
     public void printSimResults(Monitors monitored){
         var container = simResultsInfoVBox.getChildren();
