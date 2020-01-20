@@ -27,7 +27,18 @@ public class StartPayEvent extends BasicSimEvent<Environment, Stand> {
         RandomGenerator RandomGen = new RandomGenerator();
         Distribution distribution= environment.simParameters.PBtankTimeDistrib;
         double delay = RandomGen.generate(distribution);
-        new FinishPayEvent(environment, delay/3, stand);
+        new FinishPayEvent(environment, delay/2, stand);
+        slowSim(environment);
+    }
+
+    private void slowSim(Environment environment) {
+        environment.simManager.pauseSimulation();
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        environment.simManager.resumeSimulation();
     }
 
     @Override

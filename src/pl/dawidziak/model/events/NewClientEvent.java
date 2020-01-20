@@ -34,9 +34,14 @@ public class NewClientEvent extends BasicSimEvent<Environment, Object>  {
             double dalay = RandomGen.generate(environment.simParameters.clientDistrib);
             new NewClientEvent(environment, dalay);
         }
+        slowSim(environment);
+
+    }
+
+    private void slowSim(Environment environment) {
         environment.simManager.pauseSimulation();
         try {
-            Thread.sleep(500);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

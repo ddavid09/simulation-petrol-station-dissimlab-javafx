@@ -17,8 +17,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import pl.dawidziak.model.Client;
 import pl.dawidziak.model.Environment;
 import pl.dawidziak.model.Monitors;
+import pl.dawidziak.model.Stand;
 import pl.dawidziak.model.events.NewClientEvent;
 
 import java.awt.*;
@@ -69,6 +71,9 @@ public class SimAnimationController implements Initializable {
     private Image fuelStandImg;
     private Image counterStandImg;
     private Image washStandImg;
+    private Image clientof;
+    private Image clientwf;
+    private Image clientow;
 
     private GraphicsContext tankQueueGC;
     private GraphicsContext tankStandsGC;
@@ -88,6 +93,9 @@ public class SimAnimationController implements Initializable {
         fuelStandImg = new Image("stand-p.png");
         counterStandImg = new Image("stand-c.png");
         washStandImg = new Image("stand-cw.png");
+        clientof = new Image("car-of.png");
+        clientow = new Image("car-ow.png");
+        clientwf = new Image("car-fw.png");
 
         tankStandsGC = standsLayer.getGraphicsContext2D();
         tankQueueGC = standsQueueLayer.getGraphicsContext2D();
@@ -96,7 +104,7 @@ public class SimAnimationController implements Initializable {
         washQueueGC = washQueueLayer.getGraphicsContext2D();
         washStandGC = washLayer.getGraphicsContext2D();
 
-        final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1),
+        final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(50),
                 (EventHandler) event -> {
                     updateEnvironment();
                 }));
@@ -106,47 +114,126 @@ public class SimAnimationController implements Initializable {
 
     private void updateEnvironment() {
 
-        standsQueueStatusLabel.setText(simEnvironment.queueToFuelStands.size() + "/" + simEnvironment.simParameters.clientAmount);
-        countersQueueStatusLabel.setText(LocalTime.now().toString());
-        //washQueueStatusLabel;
-    }
+        standsQueueStatusLabel.setText(simEnvironment.queueToFuelStands.size() + "/" + simEnvironment.simParameters.postQueueSize);
+        countersQueueStatusLabel.setText(simEnvironment.queueToCounters.size() + "");
+        washQueueStatusLabel.setText(simEnvironment.queueToWash.size() + "");
+        tankQueueGC.clearRect(0, 0, standsQueueLayer.getWidth(), standsQueueLayer.getHeight());
+        int i = 0;
+        for (Client client : simEnvironment.queueToFuelStands) {
 
-    private static void simulation(Environment environment){
-        try {
-            new NewClientEvent(environment, 0);
-        } catch (SimControlException e) {
-            e.printStackTrace();
+            switch (client.getClientType()){
+                case ONLY_FUEL:
+                    tankQueueGC.drawImage(clientof, 10+(80*i), 20);
+                    break;
+                case FUEL_WASH:
+                    tankQueueGC.drawImage(clientwf, 10+(80*i), 20);
+                    break;
+                case ONLY_WASH:
+                    tankQueueGC.drawImage(clientow, 10+(80*i), 20);
+            }
+            i++;
+        }
+        i = 0;
+        for (Stand stand : simEnvironment.fuelStands){
+            if(stand.getStoredClient() == null){
+                tankStandsGC.clearRect(80+(150*i), 20, 64, 64);
+            }else{
+                switch (stand.getStoredClient().getClientType()){
+                    case ONLY_FUEL:
+                        tankStandsGC.clearRect(80+(150*i), 20, 64, 64);
+                        tankStandsGC.drawImage(clientof, 80+(150*i), 20);
+                        break;
+                    case FUEL_WASH:
+                        tankStandsGC.clearRect(80+(150*i), 20, 64, 64);
+                        tankStandsGC.drawImage(clientwf, 80+(150*i), 20);
+                        break;
+                    case ONLY_WASH:
+                        tankStandsGC.clearRect(80+(150*i), 20, 64, 64);
+                        tankStandsGC.drawImage(clientow, 80+(150*i), 20);
+                }
+            }
+            i++;
         }
 
-        try {
-            environment.simManager.startSimulation();
-        } catch (SimControlException e) {
-            e.printStackTrace();
+        i=0;
+        countersQueueGC.clearRect(0, 0, standsQueueLayer.getWidth(), standsQueueLayer.getHeight());
+        for (Client client : simEnvironment.queueToCounters) {
+
+            switch (client.getClientType()){
+                case ONLY_FUEL:
+                    countersQueueGC.drawImage(clientof, 10+(80*i), 20);
+                    break;
+                case FUEL_WASH:
+                    countersQueueGC.drawImage(clientwf, 10+(80*i), 20);
+                    break;
+                case ONLY_WASH:
+                    countersQueueGC.drawImage(clientow, 10+(80*i), 20);
+            }
+            i++;
         }
 
-        System.out.println("Liczba obsluzonych klientow: " + environment.getServicedClientAmount());
-        System.out.println("Liczba straconych klientow: " + environment.getLostClientAmount());
-        System.out.println("Srednia liczba klientow w kolejce do stanowisk: " + Statistics.arithmeticMean(environment.monitors.sizeQueueFuel));
-        System.out.println("Srednia liczba klientow w kolejce do myjni " + Statistics.arithmeticMean(environment.monitors.sizeQueueWash));
-        System.out.println("Sredni czas tankowania samochodu: " + Statistics.arithmeticMean(environment.monitors.serviceTime));
-        System.out.println("Sredni czas mycia samochodu: " + Statistics.arithmeticMean(environment.monitors.washTime));
-        System.out.println("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + ((double)environment.getLostClientAmount()/environment.simParameters.clientAmount));
+        i = 0;
+        for (Stand stand : simEnvironment.counterStands){
+            if(stand.getStoredClient() == null){
+                countersStandsGC.clearRect(80+(150*i), 20, 64, 64);
+            }else{
+                switch (stand.getStoredClient().getClientType()){
+                    case ONLY_FUEL:
+                        countersStandsGC.clearRect(80+(150*i), 20, 64, 64);
+                        countersStandsGC.drawImage(clientof, 80+(150*i), 20);
+                        break;
+                    case FUEL_WASH:
+                        countersStandsGC.clearRect(80+(150*i), 20, 64, 64);
+                        countersStandsGC.drawImage(clientwf, 80+(150*i), 20);
+                        break;
+                    case ONLY_WASH:
+                        countersStandsGC.clearRect(80+(150*i), 20, 64, 64);
+                        countersStandsGC.drawImage(clientow, 80+(150*i), 20);
+                }
+            }
+            i++;
+        }
 
-        Diagram diagram = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba samochodow w kolejkach");
-        diagram.add(environment.monitors.sizeQueueFuel, Color.BLACK, "do stanowisk");
-        diagram.add(environment.monitors.sizeQueueWash, Color.RED, "do myjni");
-        diagram.show();
+        i=0;
+        washQueueGC.clearRect(0, 0, standsQueueLayer.getWidth(), standsQueueLayer.getHeight());
+        for (Client client : simEnvironment.queueToWash) {
 
-        Diagram diagramst = new Diagram(Diagram.DiagramType.DISTRIBUTION, "Czas tankowania/mycia samochodu");
-        diagramst.add(environment.monitors.serviceTime, Color.BLACK, "tankowania");
-        diagramst.add(environment.monitors.washTime, Color.RED, "mycia");
-        diagramst.show();
+            switch (client.getClientType()){
+                case ONLY_FUEL:
+                    washQueueGC.drawImage(clientof, 10+(80*i), 20);
+                    break;
+                case FUEL_WASH:
+                    washQueueGC.drawImage(clientwf, 10+(80*i), 20);
+                    break;
+                case ONLY_WASH:
+                    washQueueGC.drawImage(clientow, 10+(80*i), 20);
+            }
+            i++;
+        }
 
-        Diagram diagramla = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba rezygnacji");
-        diagramla.add(environment.monitors.lostClient, Color.BLUE);
-        diagramla.show();
+
+        if(simEnvironment.washStand.getStoredClient() == null){
+            washStandGC.clearRect(80, 20, 64, 64);
+        }else{
+            switch (simEnvironment.washStand.getStoredClient().getClientType()){
+                case ONLY_FUEL:
+                    washStandGC.clearRect(80, 20, 64, 64);
+                    washStandGC.drawImage(clientof, 80, 20);
+                    break;
+                case FUEL_WASH:
+                    washStandGC.clearRect(80, 20, 64, 64);
+                    washStandGC.drawImage(clientwf, 80, 20);
+                    break;
+                case ONLY_WASH:
+                    washStandGC.clearRect(80, 20, 64, 64);
+                    washStandGC.drawImage(clientow, 80, 20);
+            }
+        }
+
+
 
     }
+
 
     public void drawParameters() {
         for(int i=0; i<simEnvironment.simParameters.postAmount; i++){

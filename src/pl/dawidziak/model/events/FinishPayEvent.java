@@ -47,6 +47,17 @@ public class FinishPayEvent extends BasicSimEvent<Environment, Stand> {
             stand.setStoredClient(null);
         }
 
+        slowSim(environment);
+    }
+
+    private void slowSim(Environment environment) {
+        environment.simManager.pauseSimulation();
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        environment.simManager.resumeSimulation();
     }
 
     @Override
