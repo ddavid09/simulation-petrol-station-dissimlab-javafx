@@ -15,6 +15,7 @@ public class Environment extends BasicSimObj {
     public final Stand[] fuelStands;
     public final Stand[] counterStands;
     public final Stand washStand;
+    public boolean isFinished = false;
 
     private int lostClientAmount;
     private int servicedClientAmount;

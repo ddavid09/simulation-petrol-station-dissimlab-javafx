@@ -230,7 +230,10 @@ public class SimAnimationController implements Initializable {
             }
         }
 
-
+        if(simEnvironment.isFinished){
+            printSimResults(simEnvironment.monitors);
+            simEnvironment.isFinished = false;
+        }
 
     }
 
@@ -257,7 +260,5 @@ public class SimAnimationController implements Initializable {
         container.add(new Label("Sredni czas tankowania samochodu: " + Statistics.arithmeticMean(monitored.serviceTime)));
         container.add(new Label("Sredni czas mycia samochodu: " + Statistics.arithmeticMean(monitored.washTime)));
         container.add(new Label("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + ((double)simEnvironment.getLostClientAmount()/simEnvironment.simParameters.clientAmount)));
-
-
     }
 }

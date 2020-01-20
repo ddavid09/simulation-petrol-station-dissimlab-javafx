@@ -15,9 +15,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import pl.dawidziak.model.*;
 import pl.dawidziak.model.events.NewClientEvent;
@@ -83,54 +85,55 @@ public class LoadParametersController implements Initializable {
 
     public void startButtonOnAction(ActionEvent actionEvent) {
 
-//        DistribParameters = new ArrayList<>();
-//
-//        for (HBox hbox : paramsHBoxes) {
-//            int paramsAmount = hbox.getChildren().size();
-//            Number[] params = new Number[paramsAmount];
-//            var array = hbox.getChildren();
-//            if (paramsAmount == 1) {
-//                TextField tf = (TextField) array.get(0);
-//                params[0] = Double.parseDouble(tf.getText());
-//            } else if (paramsAmount == 2) {
-//                TextField tf1 = (TextField) array.get(0);
-//                TextField tf2 = (TextField) array.get(1);
-//                params[0] = Double.parseDouble(tf1.getText());
-//                params[1] = Double.parseDouble(tf2.getText());
-//            } else {
-//                TextField tf1 = (TextField) array.get(0);
-//                TextField tf2 = (TextField) array.get(1);
-//                TextField tf3 = (TextField) array.get(2);
-//                params[0] = Double.parseDouble(tf1.getText());
-//                params[1] = Double.parseDouble(tf2.getText());
-//                params[2] = Double.parseDouble(tf3.getText());
-//            }
-//            DistribParameters.add(params);
-//        }
-//
-//        int clientAmount = Integer.parseInt(clientAmountInput.getText());
-//        int postAmount = Integer.parseInt(postAmountInput.getText());
-//        int postQueueSize = Integer.parseInt(postQueueSizeInput.getText());
-//        int counterAmount = Integer.parseInt(counterAmountInput.getText());
-//        //Distributions
-//        Distribution clientDistrib = new Distribution(clientDistribComboBox.getValue(), DistribParameters.get(0));
-//        Distribution PBtankTimeDistrib = new Distribution(PBtimeDistribComboBox.getValue(), DistribParameters.get(1));
-//        Distribution ONtankTimeDistrib = new Distribution(ONtimeDistribComboBox.getValue(), DistribParameters.get(2));
-//        Distribution LPGtankTimeDistrib = new Distribution(LPGtimeDistribComboBox.getValue(), DistribParameters.get(3));
-//        Distribution carWashChoiceDistrib = new Distribution(washDistribComboBox.getValue(), DistribParameters.get(4));
-//        Distribution fuelChoiceDistrib = new Distribution(fuelTypeDistribComboBox.getValue(), DistribParameters.get(5));
+        DistribParameters = new ArrayList<>();
 
-        int clientAmount = 150;
-        int postAmount = 4;
-        int postQueueSize = 10;
-        int counterAmount = 3;
+        for (HBox hbox : paramsHBoxes) {
+            int paramsAmount = hbox.getChildren().size();
+            Number[] params = new Number[paramsAmount];
+            var array = hbox.getChildren();
+            if (paramsAmount == 1) {
+                TextField tf = (TextField) array.get(0);
+                params[0] = Double.parseDouble(tf.getText());
+            } else if (paramsAmount == 2) {
+                TextField tf1 = (TextField) array.get(0);
+                TextField tf2 = (TextField) array.get(1);
+                params[0] = Double.parseDouble(tf1.getText());
+                params[1] = Double.parseDouble(tf2.getText());
+            } else {
+                TextField tf1 = (TextField) array.get(0);
+                TextField tf2 = (TextField) array.get(1);
+                TextField tf3 = (TextField) array.get(2);
+                params[0] = Double.parseDouble(tf1.getText());
+                params[1] = Double.parseDouble(tf2.getText());
+                params[2] = Double.parseDouble(tf3.getText());
+            }
+            DistribParameters.add(params);
+        }
 
-        Distribution clientDistrib = new Distribution(DistributionName.exponential, 5);
-        Distribution PBtankTimeDistrib = new Distribution(DistributionName.uniform, 0, 100);
-        Distribution ONtankTimeDistrib = new Distribution(DistributionName.erlang, 100, 2);
-        Distribution LPGtankTimeDistrib = new Distribution(DistributionName.normal, 50, 50);
-        Distribution carWashChoiceDistrib = new Distribution(DistributionName.normal, 30, 40);
-        Distribution fuelChoiceDistrib = new Distribution(DistributionName.gamma, 5, 2);
+        int clientAmount = Integer.parseInt(clientAmountInput.getText());
+        int postAmount = Integer.parseInt(postAmountInput.getText());
+        int postQueueSize = Integer.parseInt(postQueueSizeInput.getText());
+        int counterAmount = Integer.parseInt(counterAmountInput.getText());
+        //Distributions
+        Distribution clientDistrib = new Distribution(clientDistribComboBox.getValue(), DistribParameters.get(0));
+        Distribution PBtankTimeDistrib = new Distribution(PBtimeDistribComboBox.getValue(), DistribParameters.get(1));
+        Distribution ONtankTimeDistrib = new Distribution(ONtimeDistribComboBox.getValue(), DistribParameters.get(2));
+        Distribution LPGtankTimeDistrib = new Distribution(LPGtimeDistribComboBox.getValue(), DistribParameters.get(3));
+        Distribution carWashChoiceDistrib = new Distribution(washDistribComboBox.getValue(), DistribParameters.get(4));
+        Distribution fuelChoiceDistrib = new Distribution(fuelTypeDistribComboBox.getValue(), DistribParameters.get(5));
+
+        //MOCK
+//        int clientAmount = 150;
+//        int postAmount = 4;
+//        int postQueueSize = 10;
+//        int counterAmount = 3;
+//
+//        Distribution clientDistrib = new Distribution(DistributionName.exponential, 5);
+//        Distribution PBtankTimeDistrib = new Distribution(DistributionName.uniform, 0, 100);
+//        Distribution ONtankTimeDistrib = new Distribution(DistributionName.erlang, 100, 2);
+//        Distribution LPGtankTimeDistrib = new Distribution(DistributionName.normal, 50, 50);
+//        Distribution carWashChoiceDistrib = new Distribution(DistributionName.normal, 30, 40);
+//        Distribution fuelChoiceDistrib = new Distribution(DistributionName.gamma, 5, 2);
 
         var simParams = new SimParameters(clientAmount, postAmount, postQueueSize, counterAmount, clientDistrib, fuelChoiceDistrib, PBtankTimeDistrib, LPGtankTimeDistrib, ONtankTimeDistrib, carWashChoiceDistrib);
         SimManager simManager = new SimManager();
@@ -204,19 +207,28 @@ public class LoadParametersController implements Initializable {
         System.out.println("Sredni czas mycia samochodu: " + Statistics.arithmeticMean(environment.monitors.washTime));
         System.out.println("Prawdopodobienstwo rezygnacji z obslugi przez kierowce: " + ((double)environment.getLostClientAmount()/environment.simParameters.clientAmount));
 
-        Diagram diagram = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba samochodow w kolejkach");
-        diagram.add(environment.monitors.sizeQueueFuel, Color.BLACK, "do stanowisk");
-        diagram.add(environment.monitors.sizeQueueWash, Color.RED, "do myjni");
-        diagram.show();
 
-        Diagram diagramst = new Diagram(Diagram.DiagramType.DISTRIBUTION, "Czas tankowania/mycia samochodu");
-        diagramst.add(environment.monitors.serviceTime, Color.BLACK, "tankowania");
-        diagramst.add(environment.monitors.washTime, Color.RED, "mycia");
-        diagramst.show();
+        try{
+            Diagram diagram = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba samochodow w kolejkach");
+            diagram.add(environment.monitors.sizeQueueFuel, Color.BLACK, "do stanowisk");
+            diagram.add(environment.monitors.sizeQueueWash, Color.RED, "do myjni");
+            diagram.show();
 
-        Diagram diagramla = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba rezygnacji");
-        diagramla.add(environment.monitors.lostClient, Color.BLUE);
-        diagramla.show();
+            Diagram diagramst = new Diagram(Diagram.DiagramType.DISTRIBUTION, "Czas tankowania/mycia samochodu");
+            diagramst.add(environment.monitors.serviceTime, Color.BLACK, "tankowania");
+            diagramst.add(environment.monitors.washTime, Color.RED, "mycia");
+            diagramst.show();
+
+            Diagram diagramla = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Liczba rezygnacji");
+            diagramla.add(environment.monitors.lostClient, Color.BLUE);
+            diagramla.show();
+        }catch (ArrayIndexOutOfBoundsException e){
+
+        }
+        finally {
+            environment.isFinished = true;
+        }
+
     }
 
     public void loadDefaultParams(ActionEvent actionEvent){
