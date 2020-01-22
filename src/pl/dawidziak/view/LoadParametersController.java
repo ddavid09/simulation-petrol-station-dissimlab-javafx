@@ -214,7 +214,7 @@ public class LoadParametersController implements Initializable {
             diagram.add(environment.monitors.sizeQueueWash, Color.RED, "do myjni");
             diagram.show();
 
-            Diagram diagramst = new Diagram(Diagram.DiagramType.DISTRIBUTION, "Czas tankowania/mycia samochodu");
+            Diagram diagramst = new Diagram(Diagram.DiagramType.TIME_FUNCTION, "Czas tankowania/mycia samochodu");
             diagramst.add(environment.monitors.serviceTime, Color.BLACK, "tankowania");
             diagramst.add(environment.monitors.washTime, Color.RED, "mycia");
             diagramst.show();
@@ -238,10 +238,10 @@ public class LoadParametersController implements Initializable {
         LPGtimeDistribComboBox.setValue(DistributionName.normal);
         washDistribComboBox.setValue(DistributionName.normal);
         fuelTypeDistribComboBox.setValue(DistributionName.gamma);
-        clientAmountInput.setText("1000");
-        postAmountInput.setText("2");
-        counterAmountInput.setText("1");
-        postQueueSizeInput.setText("10");
+        clientAmountInput.setText("70");
+        postAmountInput.setText("5");
+        counterAmountInput.setText("3");
+        postQueueSizeInput.setText("8");
 
     }
 

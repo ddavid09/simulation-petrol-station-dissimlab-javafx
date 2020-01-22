@@ -22,7 +22,7 @@ public class StartWashEvent extends BasicSimEvent<Environment, Object> {
         RandomGenerator RandomGen = new RandomGenerator();
         Distribution distribution = environment.simParameters.PBtankTimeDistrib;
         double delay = RandomGen.generate(distribution);
-        new FinishWashEvent(environment, delay);
+        new FinishWashEvent(environment, delay/2);
         slowSim(environment);
     }
 
